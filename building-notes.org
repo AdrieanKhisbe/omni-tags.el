@@ -1,0 +1,51 @@
+* Initials noytes
+- faire la liste des mots clefs
+- personnal font
+- voir après s'il peuvent pas etre parsé, et repertorié à la Eclispe
+
+to use: [[http://www.emacswiki.org/emacs/FixmeMode][FIXMEMODE!!!!]]
+see also: [[http://www.emacswiki.org/emacs/RFringe][Rfringe]]
+[[http://stackoverflow.com/questions/2242572/emacs-todo-indicator-at-left-side][indicate todo left side]]
+>>>SEE >[[http://www.emacswiki.org/emacs/fic-mode.el][FIC-MODE]] --- Show FIXME/TODO/BUG/KLUDGE in special face only in comments and strings
+fringe...
+[[http://www.emacswiki.org/emacs/AddKeywords][addKeyword]]
+
+[[http://www.emacswiki.org/emacs/FontLockKeywords][fontlock keyword]] >> peut donner différentes couelurs à différentes parties de la regexp
+=(REGEXP (N1 FACE1) (N2 FACE2) (N3 FACE3) …)=
+Highlight group Ni in REGEXP with FACEi
+
+
+also: [[https://github.com/nschum/highlight-symbol.el][HIGHLIGHT SYMBOL]] to relocate
+
+Letter: contenus
+Caractère spéciaux: urgence
+
+find how to catch the ponctuatino: !!?
+
+mapcar (lambda (mode)
+	  (font-lock-add-keywords
+	   mode
+	   '(("FIXME" 0 'show-paren-mismatch-face)
+	     ("\\.\\( \\)\\b" 1 'extra-whitespace-face))))
+	'(text-mode latex-mode html-mode emacs-lisp-mode
+	  texinfo-mode))
+The second REGEXP highlights all single spaces after a point. (I want there to be two spaces unless we’re talking about abbreviations.)
+
+Solution temporaire:>
+à transformer petit à petit en *vrai minor mode!*. (intégrer dans meme ficher tag face, et le reste
+
+Nota: bug quand des bout de la regexp pas trouvé:
+du coup fait devoir decliner les match, mais sans des ???
+
+Doit utiliser une variable fontlock pour surcharge>>> §PK?
+
+* Dilemmas & Ideas
+
+# §see: 
+Namespace? (for function and var.): 
+private namespace?
+
+variable to handle action/description tag symbol
+
+
+Cask: handle dependancies?
