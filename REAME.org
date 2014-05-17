@@ -1,0 +1,16 @@
+
+ My tag mode
+* Description
+This mode is to support tag, anotation in org-files or comments in programming mode.
+
+# why-> Gool
+* Installation
+
+
+* Use
+
+/To be Done/
+
+* Configuration
+
+/Later/
