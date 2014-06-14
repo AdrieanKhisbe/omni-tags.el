@@ -1,12 +1,13 @@
+;;; By Adriean Khisbe
 ;;; §building: for nom, just import
 
 (require 'mypersonaltagface)
 
 ;; §doc: HOW: default: at begining: set:ecrase, othervalues: at the end
-;; §TOFIX: inorg commment not working!
+;; §TOFIX: inorg comment not working!
 ;; §TOFIX: Make it appear in comment!!!
-;; §TF! ?? what _ symbolisze in regexp? match ;?
-;; §TD: make list of different keyword, more highlighted! TD TF TI TM
+;; §TF! ?? what _ symbolize in regexp? match ;?
+;; §TD: make list of different keyword, more highlighted! for instance: TD TF TI TM
 
 
 ;; §see: name?
@@ -39,40 +40,39 @@
 (setq mg:tag-patterns
       '(
 	;; §doc: Keyword: form: more doc at `font-lock-keywords'
-	;; Regexp or matcher(function to search)
-	;; (regexp-opt)
 	;; MATCH-HIGHLIGH (SUBEXP FACENAME [OVERRIDE [LAXMATCH]])
 	;; override: t:overidde, append/preprend: merge of existing fontification!
+	;; use prepend to "override" comment face  §idea: make this behavior configurable
 	;; LAXMATCH: dont throw error if a sibexp is not matchd
 
 	;; §TODO migrate to `rx'!!
+	;; Regexp or matcher(function to search) (regexp-opt)
 
 	;; online si pas de sousexpr
 	( "§+:\\w*>"  . 'font-lock-warning-face ) ; Inline, MArche en principe, pattern tofix
 
-	("\\(§+\\)\\(tartiflette\\|choucroute\\)\\>"
-	 (1 mt:fsymb append)
-	 (2 mt:fname  t))
 	;; wonder/expression tag
 	( "\\(§+\\)\\([!?¿¡]+\\)"
-	  (1 mt:fsymb append)
-	  (2 mt:fname append))
+	  (1 mt:fsymb t)
+	  (2 mt:fponct t))
 
 	;;§todo: symple tag not in bold
 
-	;; MultiTags!!
+	;; MultiTags §idea: separateur spécial pour faire tdu genre §todo-see
+
+	;; Detailed Tags
 	;; §original: \(§+\)\([[:alnum:]-_]+\)\(\(:\)\([[:alnum:],_-/;]+\)\)?\([!¡?¿:]+\)?
 	;;§old: "\\(§+\\)\\(\\w+\\)\\(\\(:\\)\\(\\w+\\)\\)+\\([!?]+\\)?"
 
 	;; Complex Tag §TD: repeat the same one without quotes
 	( "\\(§+\\)\\([[:alnum:]-_@ ']+\\)\\(\\(:\\)\\([[:alnum:],_-/;]+\\)\\)?\\([!¡?¿:]+\\)?"
-	     (1 mt:fsymb append) ;§test:append
-	     (2 mt:fname append)
-	     (4 mt:fsep  append "laxmatch")
-	     (5 mt:fdet append "lax")
-	     (6 mt:fponct append "laxmatch"))
-	)
-      )
+	  (1 mt:fsymb t)
+	  (2 mt:fname t)
+	  (4 mt:fsep t "laxmatch")
+	  (5 mt:fdet t "lax")
+	  (6 mt:fponct t "laxmatch"))
+
+	))
 
   ;;; Définition des tags
 (defun add-personal-tags(); Tat
@@ -81,7 +81,8 @@
   (font-lock-add-keywords
    nil  ; §doc: Mode, if nil means that it's applied to current buffer. otherwise specify mode
    mg:tag-patterns))
-
+;; §idea: fonction à réappeler, pour ractuliser suite changement de config
+;; (fonction regénérerais les variables)
 
   ;;; ¤* Utils fonctions
 (defun occur-tags ()

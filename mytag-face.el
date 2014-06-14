@@ -3,7 +3,7 @@
 ;; §TD:adddoc!! change default
 ;; Each of these symbols is both a face name, and a variable whose default value is the symbol itself.
 
-; §TD: add some doc, and inheritance!
+; §TD: add some doc, and inheritance! (might help to benefit from font look priority)
 
 (defvar  mytag-tagsymbol 'mytag-tagsymbol)
 (defface mytag-tagsymbol
