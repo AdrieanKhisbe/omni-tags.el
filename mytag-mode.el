@@ -8,41 +8,57 @@
 ;; §TF! ?? what _ symbolisze in regexp? match ;?
 ;; §TD: make list of different keyword, more highlighted! TD TF TI TM
 
-;; §idea:TODO! factoriser les noms: pour facilement switch les font!!
 
 ;; §see: name?
 (defvar mt:primary-tag "§" "Tag primaire. (associé aux actions)")
 (defvar mt:secondary-tag "¤" "Tag secondaire. (associé aux descriptions)")
-
 ;; §todo: passer à rx builder.
+(defvar mt:font-lock-mode t "Flag to use font lock face (until overiding is fix)")
+
+;; Factorisation des noms de font pour facilement switcher
+;; §fontlist: mytag-tagsymbol mytag-tagsymbols mytag-ponctuation mytag-separation mytag-name mytag-details
+(if (not mt:font-lock-mode)
+    (setq mt:fsymb mytag-tagsymbol
+      mt:fsymbss mytag-tagsymbols
+      mt:fponct mytag-ponctuation
+      mt:fsep mytag-separation
+      mt:fname mytag-name
+      mt:fd mytag-details)
+    (setq mt:fsymb font-lock-keyword-face
+      mt:fsymbss font-lock-keyword-face
+      mt:fponct font-lock-warning-face
+      mt:fsep font-lock-warning-face
+      mt:fname font-lock-type-face
+      mt:fdet font-lock-comment-delimiter-face))
+;; note: local variables, not exported
+;; §todo: defface inheritance! (maybe fix priority of face)
 
 (defvar mg:tag-patterns nil "Ensemble des patterns à matcher")
 
 ;; §todo: tell appart (utiliser fonction pour générer la pattern (pase le préfixe))
 (setq mg:tag-patterns
       '(
-	;; §doc: Keyword: form: more doc at =font-lock-keywords=
+	;; §doc: Keyword: form: more doc at `font-lock-keywords'
 	;; Regexp or matcher(function to search)
 	;; (regexp-opt)
 	;; MATCH-HIGHLIGH (SUBEXP FACENAME [OVERRIDE [LAXMATCH]])
 	;; override: t:overidde, append/preprend: merge of existing fontification!
 	;; LAXMATCH: dont throw error if a sibexp is not matchd
 
-	;; online si pas de sousexpr
-	;;   ( "§+\\w*\\>"  . 'change-log-list-face ) ; Inline, to test
+	;; §TODO migrate to `rx'!!
 
-	;; §fontlist: mytag-tagsymbol mytag-tagsymbols mytag-ponctuation mytag-separation mytag-name mytag-details
-	;; §todo: defface inheritance!
-	;; §test function
+	;; online si pas de sousexpr
+	( "§+:\\w*>"  . 'font-lock-warning-face ) ; Inline, MArche en principe, pattern tofix
 
 	("\\(§+\\)\\(tartiflette\\|choucroute\\)\\>"
-	 (1 mytag-tagsymbol append)
-	 (2 mytag-name t))
+	 (1 mt:fsymb append)
+	 (2 mt:fname  t))
 	;; wonder/expression tag
 	( "\\(§+\\)\\([!?¿¡]+\\)"
-	  (1 mytag-tagsymbol append)
-	  (2 mytag-name  append)
-	  )
+	  (1 mt:fsymb append)
+	  (2 mt:fname append))
+
+	;;§todo: symple tag not in bold
 
 	;; MultiTags!!
 	;; §original: \(§+\)\([[:alnum:]-_]+\)\(\(:\)\([[:alnum:],_-/;]+\)\)?\([!¡?¿:]+\)?
@@ -50,19 +66,11 @@
 
 	;; Complex Tag §TD: repeat the same one without quotes
 	( "\\(§+\\)\\([[:alnum:]-_@ ']+\\)\\(\\(:\\)\\([[:alnum:],_-/;]+\\)\\)?\\([!¡?¿:]+\\)?"
-	  ;; §tovar!!
-	  (1 font-lock-keyword-face prepend) ;§test:append
-	  (2 font-lock-comment-delimiter-face  prepend)
-	  (4 font-lock-warning-face  prepend  "l")
-	  (5 font-lock-type-face   prepend "l")
-	  (6 font-lock-warning-face prepend "l")
-	  ;;§TOFIX!
-	  ;;    (1 mytag-tagsymbol append) ;§test:append
-	  ;;    (2 mytag-name append)
-	  ;;    (4 mytag-separation  append "laxmatch")
-	  ;;    (5 mytag-details append "lax")
-	  ;;    (6 mytag-ponctuation append "laxmatch")
-	  ) ;;
+	     (1 mt:fsymb append) ;§test:append
+	     (2 mt:fname append)
+	     (4 mt:fsep  append "laxmatch")
+	     (5 mt:fdet append "lax")
+	     (6 mt:fponct append "laxmatch"))
 	)
       )
 
@@ -72,11 +80,10 @@
   ;; §idea: sith for primary,seondart
   (font-lock-add-keywords
    nil  ; §doc: Mode, if nil means that it's applied to current buffer. otherwise specify mode
-   mg:tag-patterns
-   )
-  )
-  ;;; ¤* Utils fonctions
+   mg:tag-patterns))
 
+
+  ;;; ¤* Utils fonctions
 (defun occur-tags ()
   "Call occur on My §tags"
   (interactive)
@@ -102,7 +109,7 @@
 (global-set-key (kbd "C-§") 'previous-tags)
 (global-set-key (kbd "C-M-§") 'occur-tags)
 
-;; move hook?
+;; move to hook?
 ;; §idée: move dans `mt:default-config' ?
 (add-hook 'org-mode-hook 'add-personal-tags)
 (add-hook 'prog-mode-hook 'add-personal-tags)
