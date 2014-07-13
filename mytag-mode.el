@@ -60,6 +60,7 @@
     (1 mt:fsymb t)
     (2 mt:fponct t))
   "wonder/expression tag")
+;; §maybe; extract defintion in function to enable to reevalute it (after change pattern)
 
 (defvar mt:tag-detailed-keyword
   `(,(mt:make-pattern "%s(['@\-_ [:alnum:]]+)(([:])([_,-;/[:alnum:]]+))*([:?!¡¿]+)?")
@@ -85,15 +86,16 @@
 	,mt:tag-wonder-keyword
 	))
 
-  ;;; Définition des tags
-(defun add-personal-tags(); Tat
+  ;;; Coloration des tags des tags
+(defun mytag-font-on ()
   "adds font-lock for my personals §Tags"                                       ;
-  ;; §idea: sith for primary,seondart
   (font-lock-add-keywords
    nil  ; §doc: Mode, if nil means that it's applied to current buffer. otherwise specify mode
    mt:tag-patterns))
-;; §idea: fonction à réappeler, pour ractuliser suite changement de config
-;; (fonction regénérerais les variables)
+
+(defun mytag-font-off ()
+  "Remove font-lock for my personals §Tags"                                       ;
+  (font-lock-add-keywords nil mt:tag-patterns))
 
   ;;; ¤* Utils fonctions
 ;; §todo: autoload
@@ -122,11 +124,19 @@
 (global-set-key (kbd "C-§") 'previous-tags)
 (global-set-key (kbd "C-M-§") 'occur-tags)
 
-;; §todo; create minor mode
-;; move to hook?
 ;; §idée: move dans `mt:default-config' ?
 ;; §TODO: proposer dans la documentation un use!!
-(add-hook 'org-mode-hook 'add-personal-tags)
-(add-hook 'prog-mode-hook 'add-personal-tags)
+
+;;;###autoload
+(define-minor-mode mytag-mode
+  "Colorize 'Personal tags' in the buffer."
+  :lighter " §"
+  (progn (if mytag-mode
+	(mytag-font-on)
+      (mytag-font-off))))
+
+
+(add-hook 'org-mode-hook 'mytag-mode)
+(add-hook 'prog-mode-hook 'mytag-mode)
 
 (provide 'mytag-mode)
