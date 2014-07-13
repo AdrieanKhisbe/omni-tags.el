@@ -111,13 +111,16 @@
 (defun mt:next-tags ()
   "Go to next §tags"
   (interactive)
-  (search-forward-regexp "§\\w+"))
-
+ (unless (search-forward-regexp "§\\w+" nil t)
+   (message "No More Founds Tags!")))
+;; §maybe: si ressaye, revient au début?
 
 (defun mt:previous-tags ()
   "Go to prev §tags"
   (interactive)
-  (search-forward-regexp "§\\w+"))
+ (unless (search-forward-regexp "§\\w+" nil t)
+   (message "No Tags Before!")))
+
 
 ;; §todo: impr: message erreur
 ;; org opening of folding
