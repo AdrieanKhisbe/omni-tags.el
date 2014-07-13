@@ -28,12 +28,12 @@
 	  mt:fsep mytag-separation
 	  mt:fname mytag-name
 	  mt:fd mytag-details)
-    (setq mt:fsymb font-lock-keyword-face
-	  mt:fsymbss font-lock-keyword-face
-	  mt:fponct font-lock-warning-face
-	  mt:fsep font-lock-warning-face
-	  mt:fname font-lock-type-face
-	  mt:fdet font-lock-comment-delimiter-face))
+  (setq mt:fsymb font-lock-keyword-face
+	mt:fsymbss font-lock-keyword-face
+	mt:fponct font-lock-warning-face
+	mt:fsep font-lock-warning-face
+	mt:fname font-lock-type-face
+	mt:fdet font-lock-comment-delimiter-face))
 ;; note: local variables, not exported
 ;; §todo: defface inheritance! (maybe fix priority of face)
 
@@ -47,41 +47,42 @@
   (rxt-pcre-to-elisp (format regexp (format "(%s+|%s+)" mt:primary-tag mt:secondary-tag)))
   )
 
-;; §todo: tell appart (utiliser fonction pour générer la pattern (pase le préfixe))
+;;; Keywords Definition:
+
+;; §doc: Keyword: form: more doc at `font-lock-keywords'
+;; MATCH-HIGHLIGH (SUBEXP FACENAME [OVERRIDE [LAXMATCH]])
+;; override: t:overidde, append/preprend: merge of existing fontification!
+;; use prepend to "override" comment face  §idea: make this behavior configurable
+;; LAXMATCH: dont throw error if a sibexp is not matchd
+
+(defvar mt:tag-wonder-keyword
+  `(,(mt:make-pattern "%s([!?¿¡]+)");; §TODO: extract to var
+    (1 mt:fsymb t)
+    (2 mt:fponct t))
+  "wonder/expression tag")
+
+(defvar mt:tag-detailed-keyword
+  `(,(mt:make-pattern "%s(['@\-_ [:alnum:]]+)(([:])([_,-;/[:alnum:]]+))*([:?!¡¿]+)?")
+    ;; §tofix: combo a:b:c
+    (1 mt:fsymb t)
+    (2 mt:fname t)
+    (4 mt:fsep t "laxmatch")
+    (5 mt:fdet t "lax")
+    (6 mt:fponct t "laxmatch"))
+  "Complex Tag §TD: repeat the same one without quotes")
+
+;; New tags to create
+;; §maybe: final : that match till the end of line
+;;§todo: symple tag not in bold
+
+
+;; §note: peut etre à supprimer
 (setq mt:tag-patterns
       `(
-	;; §doc: Keyword: form: more doc at `font-lock-keywords'
-	;; MATCH-HIGHLIGH (SUBEXP FACENAME [OVERRIDE [LAXMATCH]])
-	;; override: t:overidde, append/preprend: merge of existing fontification!
-	;; use prepend to "override" comment face  §idea: make this behavior configurable
-	;; LAXMATCH: dont throw error if a sibexp is not matchd
-
 	;; online si pas de sousexpr
 	( ,(mt:make-pattern "%s:\w*>")  . 'font-lock-warning-face) ; Inline, MArche en principe, pattern tofix
-
-	;; wonder/expression tag
-	(,(mt:make-pattern "%s([!?¿¡]+)");; §TODO: extract to var
-	  (1 mt:fsymb t)
-	  (2 mt:fponct t))
-
-	;;§todo: symple tag not in bold
-
-	;; MultiTags §idea: separateur spécial pour faire tdu genre §todo-see
-
-	;; Detailed Tags
-	;; §original: \(§+\)\([[:alnum:]-_]+\)\(\(:\)\([[:alnum:],_-/;]+\)\)?\([!¡?¿:]+\)?
-	;; §old: "\\(§+\\)\\(\\w+\\)\\(\\(:\\)\\(\\w+\\)\\)+\\([!?]+\\)?"
-
-	;; Complex Tag §TD: repeat the same one without quotes
-	(,(mt:make-pattern "%s(['@\-_ [:alnum:]]+)(([:])([_,-;/[:alnum:]]+))*([:?!¡¿]+)?")
-	 ;; §tofix: combo a:b:c
-	  (1 mt:fsymb t)
-	  (2 mt:fname t)
-	  (4 mt:fsep t "laxmatch")
-	  (5 mt:fdet t "lax")
-	  (6 mt:fponct t "laxmatch"))
-
-	;; §maybe: final : that match till the end of line
+	,mt:tag-detailed-keyword
+	,mt:tag-wonder-keyword
 	))
 
   ;;; Définition des tags
