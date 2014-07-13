@@ -87,43 +87,41 @@
 	))
 
   ;;; Coloration des tags des tags
-(defun mytag-font-on ()
+(defun mt:font-on ()
   "adds font-lock for my personals §Tags"                                       ;
   (font-lock-add-keywords
    nil  ; §doc: Mode, if nil means that it's applied to current buffer. otherwise specify mode
    mt:tag-patterns))
 
-(defun mytag-font-off ()
+(defun mt:font-off ()
   "Remove font-lock for my personals §Tags"                                       ;
   (font-lock-add-keywords nil mt:tag-patterns))
 
   ;;; ¤* Utils fonctions
 ;; §todo: autoload
-(defun occur-tags ()
+(defun mt:occur-tags ()
   "Call occur on My §tags"
   (interactive)
   (occur "§\\w+" )) ;; §TODO: use pattern!
-;;§fix?
+;; §next with helm ;moccur...
 ;; couper en deux avec 1&2ary?
 
-(defun next-tags ()
+;; §todo:AA!! fail gracely
+;; cycle?
+(defun mt:next-tags ()
   "Go to next §tags"
   (interactive)
   (search-forward-regexp "§\\w+"))
 
-(defun previous-tags ()
+
+(defun mt:previous-tags ()
   "Go to prev §tags"
   (interactive)
   (search-forward-regexp "§\\w+"))
 
 ;; §todo: impr: message erreur
 ;; org opening of folding
-;; §next: tagépuration?
-
-(global-set-key (kbd "M-§") 'next-tags)
-(global-set-key (kbd "C-§") 'previous-tags)
-(global-set-key (kbd "C-M-§") 'occur-tags)
-
+;; §next: tagpuration?
 ;; §idée: move dans `mt:default-config' ?
 ;; §TODO: proposer dans la documentation un use!!
 
@@ -131,10 +129,14 @@
 (define-minor-mode mytag-mode
   "Colorize 'Personal tags' in the buffer."
   :lighter " §"
+  :keymap (let ((map (make-sparse-keymap)))
+	    (define-key map (kbd "M-§") 'mt:next-tags)
+	    (define-key map (kbd "C-§") 'mt:previous-tags)
+	    (define-key map (kbd "C-M-§") 'mt:occur-tags)
+            map)
   (progn (if mytag-mode
-	(mytag-font-on)
-      (mytag-font-off))))
-
+	     (mt:font-on)
+	   (mt:font-off))))
 
 (add-hook 'org-mode-hook 'mytag-mode)
 (add-hook 'prog-mode-hook 'mytag-mode)
