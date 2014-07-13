@@ -42,6 +42,10 @@
 ;; § voir comment late bind le tag
 
 ;; (defvar mt:pattern-simple  "Pattern for single" )
+(defun mt:make-pattern (regexp)
+  "Create a pattern. Replace first %s with tag symbol, and convert pcre format to emacs regexp"
+  (rxt-pcre-to-elisp (format regexp (format "(%s+|%s+)" mt:primary-tag mt:secondary-tag)))
+  )
 
 ;; §todo: tell appart (utiliser fonction pour générer la pattern (pase le préfixe))
 (setq mt:tag-patterns
@@ -53,10 +57,10 @@
 	;; LAXMATCH: dont throw error if a sibexp is not matchd
 
 	;; online si pas de sousexpr
-	( ,(rxt-pcre-to-elisp "§+:\w*>")  . 'font-lock-warning-face) ; Inline, MArche en principe, pattern tofix
+	( ,(mt:make-pattern "%s:\w*>")  . 'font-lock-warning-face) ; Inline, MArche en principe, pattern tofix
 
 	;; wonder/expression tag
-	(,(rxt-pcre-to-elisp "(§+)([!?¿¡]+)");; §TODO: extract to var
+	(,(mt:make-pattern "%s([!?¿¡]+)");; §TODO: extract to var
 	  (1 mt:fsymb t)
 	  (2 mt:fponct t))
 
@@ -69,7 +73,8 @@
 	;; §old: "\\(§+\\)\\(\\w+\\)\\(\\(:\\)\\(\\w+\\)\\)+\\([!?]+\\)?"
 
 	;; Complex Tag §TD: repeat the same one without quotes
-	( ,(rxt-pcre-to-elisp (format "(%s+|%s+)(['@\-_ [:alnum:]]+)(([:])([;,_;-;/[:alnum:]]+))?([:?!¡¿]+)?"  mt:primary-tag mt:secondary-tag))
+	(,(mt:make-pattern "%s(['@\-_ [:alnum:]]+)(([:])([_,-;/[:alnum:]]+))*([:?!¡¿]+)?")
+	 ;; §tofix: combo a:b:c
 	  (1 mt:fsymb t)
 	  (2 mt:fname t)
 	  (4 mt:fsep t "laxmatch")
@@ -116,6 +121,7 @@
 (global-set-key (kbd "C-§") 'previous-tags)
 (global-set-key (kbd "C-M-§") 'occur-tags)
 
+;; §todo; create minor mode
 ;; move to hook?
 ;; §idée: move dans `mt:default-config' ?
 ;; §TODO: proposer dans la documentation un use!!
