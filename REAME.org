@@ -13,4 +13,10 @@ This mode is to support tag, anotation in org-files or comments in programming m
 
 * Configuration
 
+# liste des variables
+
+A default configuration is available. you just have to invoke = §GETNAME= to set it up.
+This will hook =mytag-mode= to both =prog-mode= and =org-mode=
+and also bind §here
+# §tocompleye
 /Later/
