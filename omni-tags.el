@@ -2,7 +2,7 @@
 ;;; §building: for nom, just import
 
 (require 'pcre2el) ;§maybe: only use in development for starting performance issue
-(require 'mypersonaltagface)
+(require 'omni-tags-face)
 
 ;; §doc: HOW: default: at begining: set:ecrase, othervalues: at the end
 ;; §TOFIX: inorg comment not working!
@@ -93,7 +93,8 @@
    ot:tag-patterns))
 
 (defun ot:font-off ()
-  "Remove font-lock for my personals §Tags"                                       ;
+  "Remove font-lock for my personals §Tags"
+  ;; §check: not sure it's working
   (font-lock-add-keywords nil ot:tag-patterns))
 
   ;;; ¤* Utils fonctions

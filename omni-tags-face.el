@@ -34,4 +34,4 @@
 (defface ot:separation-face
   '((t (:weight bold :color "OrangeRed1" )))    nil    :group 'font-lock-faces) ;doc to create
 
-(provide 'mytag-face)
+(provide 'omni-tags-face)
