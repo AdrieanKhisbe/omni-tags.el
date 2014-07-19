@@ -1,21 +1,21 @@
+;;; §todo: header!!
 ;;; By Adriean Khisbe
 ;;; §building: for nom, just import
 
 (require 'pcre2el) ;§maybe: only use in development for starting performance issue
 (require 'omni-tags-face)
 
-;; §doc: HOW: default: at begining: set:ecrase, othervalues: at the end
-;; §TOFIX: inorg comment not working!
-;; §TOFIX: Make it appear in comment!!!
-;; §TF! ?? what _ symbolize in regexp? match ;?
-;; §TD: make list of different keyword, more highlighted! for instance: TD TF TI TM
+;; §TOFIX: Make it appear in org comment!!! (probably something to see with `org-mode')
+;; §Tose! ?? what _ symbolize in regexp? match ;?
+;; §Todo: make list of different keyword, more highlighted! for instance: TD TF TI TM
 
 ;; §see: name?
-(defvar ot:primary-tag "§" "Tag primaire. (associé aux actions)")
-(defvar ot:secondary-tag "¤" "Tag secondaire. (associé aux descriptions)")
-;; todo: add   :type 'boolean  :group 'linum)
-
-(defvar ot:font-lock-mode t "Flag to use font lock face (until overiding is fix)")
+(defcustom ot:primary-tag "§" "Primary Tag Symbol (associated with actions)"
+  :type 'string  :group 'omni-tags) ; §maybe:char?
+(defcustom ot:secondary-tag "¤" "Secondary Tag Symbol. (associated with descriptions)"
+  :type 'string  :group 'omni-tags)
+(defcustom ot:font-lock-mode t "Flag to use font lock face (until overiding is fix)"
+  :type 'boolean :group 'omni-tags)
 
 ;; Factorisation des noms de font pour facilement switcher
 ;; §fontlist:(original) mytag-tagsymbol mytag-tagsymbols mytag-ponctuation mytag-separation mytag-name mytag-details
@@ -44,6 +44,7 @@
 (defun ot:make-pattern (regexp)
   "Create a pattern. Replace first %s with tag symbol, and convert pcre format to emacs regexp"
   (rxt-pcre-to-elisp (format regexp (format "(%s+|%s+)" ot:primary-tag ot:secondary-tag)))
+  ;; §maybe: get ride of pcre2el dependecy?
   )
 
 ;;; Keywords Definition:
@@ -52,7 +53,7 @@
 ;; MATCH-HIGHLIGH (SUBEXP FACENAME [OVERRIDE [LAXMATCH]])
 ;; override: t:overidde, append/preprend: merge of existing fontification!
 ;; use prepend to "override" comment face  §idea: make this behavior configurable
-;; LAXMATCH: dont throw error if a sibexp is not matchd
+;; LAXMATCH: dont throw error if a sibexp is not match
 
 (defvar ot:tag-wonder-keyword
   `(,(ot:make-pattern "%s([!?¿¡]+)");; §TODO: extract to var
@@ -69,12 +70,11 @@
     (4 ot:fsep t "laxmatch")
     (5 ot:fdet t "lax")
     (6 ot:fponct t "laxmatch"))
-  "Complex Tag §TD: repeat the same one without quotes")
+  "Complex Tag §todo: repeat the same one without quotes")
 
 ;; New tags to create
 ;; §maybe: final : that match till the end of line
 ;;§todo: symple tag not in bold
-
 
 ;; §note: peut etre à supprimer
 (setq ot:tag-patterns
@@ -87,14 +87,14 @@
 
   ;;; Coloration des tags des tags
 (defun ot:font-on ()
-  "adds font-lock for my personals §Tags"                                       ;
+  "Adds font-lock for my personals §Tags"                                       ;
   (font-lock-add-keywords
    nil  ; §doc: Mode, if nil means that it's applied to current buffer. otherwise specify mode
    ot:tag-patterns))
 
 (defun ot:font-off ()
   "Remove font-lock for my personals §Tags"
-  ;; §check: not sure it's working
+  ;; §check: not sure it's working ;§todo . tear appart, remove each from tag patter. ¤maybe: mapcar
   (font-lock-add-keywords nil ot:tag-patterns))
 
   ;;; ¤* Utils fonctions
@@ -102,23 +102,26 @@
 (defun ot:occur-tags ()
   "Call occur on My §tags"
   (interactive)
+  (push-mark)
   (occur "§\\w+" )) ;; §TODO: use pattern!
 ;; §next with helm ;moccur...
 ;; couper en deux avec 1&2ary?
 
-;; §todo:AA!! fail gracely
-;; cycle?
+;; §maybe cycle?
 (defun ot:next-tags ()
   "Go to next §tags"
   (interactive)
- (unless (search-forward-regexp "§\\w+" nil t)
+  (push-mark) ;; §maybe: not if previous command was either next/previous tag? ¤maybe: configurable behavior?
+  ;; §maybe: special mark ring?
+  (unless (search-forward-regexp "§\\w+" nil t)
+    ;;§todo: make generic to adapt to tag symbol: : default arg symbol (that would be call by next-primary/secondary)
    (message "No More Founds Tags!")))
 ;; §maybe: si ressaye, revient au début?
 
 (defun ot:previous-tags ()
   "Go to prev §tags"
   (interactive)
- (unless (search-forward-regexp "§\\w+" nil t)
+ (unless (search-backward-regexp "§\\w+" nil t)
    (message "No Tags Before!")))
 
 
