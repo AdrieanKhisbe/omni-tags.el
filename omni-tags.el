@@ -49,14 +49,14 @@
 
 ;;; Keywords Definition:
 
-;; §doc: Keyword: form: more doc at `font-lock-keywords'
+;; ¤doc: Keyword: form: more doc at `font-lock-keywords'
 ;; MATCH-HIGHLIGH (SUBEXP FACENAME [OVERRIDE [LAXMATCH]])
 ;; override: t:overidde, append/preprend: merge of existing fontification!
 ;; use prepend to "override" comment face  §idea: make this behavior configurable
 ;; LAXMATCH: dont throw error if a sibexp is not match
 
 (defvar ot:tag-wonder-keyword
-  `(,(ot:make-pattern "%s([!?¿¡]+)");; §TODO: extract to var
+ `(,(ot:make-pattern "%s([!?¿¡]+)");; §TODO: extract to var
     (1 ot:fsymb t)
     (2 ot:fponct t))
   "wonder/expression tag")
@@ -89,13 +89,15 @@
 (defun ot:font-on ()
   "Adds font-lock for my personals §Tags"                                       ;
   (font-lock-add-keywords
-   nil  ; §doc: Mode, if nil means that it's applied to current buffer. otherwise specify mode
-   ot:tag-patterns))
+   nil  ; ¤doc: Mode, if nil means that it's applied to current buffer. otherwise specify mode
+   ot:tag-patterns)
+  (font-lock-fontify-buffer))
+
 
 (defun ot:font-off ()
   "Remove font-lock for my personals §Tags"
-  ;; §check: not sure it's working ;§todo . tear appart, remove each from tag patter. ¤maybe: mapcar
-  (font-lock-add-keywords nil ot:tag-patterns))
+  (mapcar (lambda (keyword) (font-lock-add-keywords nil keyword)) ot:tag-patterns)
+  (font-lock-fontify-buffer))
 
   ;;; ¤* Utils fonctions
 ;; §todo: autoload
