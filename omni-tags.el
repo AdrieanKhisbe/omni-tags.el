@@ -72,6 +72,14 @@
     (6 ot:fponct t "laxmatch"))
   "Complex Tag §todo: repeat the same one without quotes")
 
+(defvar ot:tag-heading ;name to find
+ `(,(rxt-pcre-to-elisp (format "(%s)(>+)" ot:secondary-tag))
+    (1 ot:fsymb t)
+    (2 ot:fponct t)) ;§maybe: grab the rest of the line (eventual title)
+  "heading tag")
+;; §later: add funtions. and specific navigation to emulate org
+
+
 ;; New tags to create
 ;; §maybe: final : that match till the end of line
 ;;§todo: symple tag not in bold
@@ -83,6 +91,7 @@
 	( ,(ot:make-pattern "%s:\w*>")  . 'font-lock-warning-face) ; Inline, MArche en principe, pattern tofix
 	,ot:tag-detailed-keyword
 	,ot:tag-wonder-keyword
+	,ot:tag-heading
 	))
 
   ;;; Coloration des tags des tags
@@ -132,6 +141,11 @@
 ;; §next: tagpuration?
 ;; §idée: move dans `ot:default-config' ?
 ;; §TODO: proposer dans la documentation un use!!
+;; §todo:  heading. fonctions pour naviguer.
+;; map à prefix pour y associer un ensemblede fonction. ex: C-x § ou s-§
+
+;; §later: add some simmbol in the fringe? ¤inspiration:gitgutter-flycheck-fixmargin
+;; §maybe: do something with marks
 
 ;;;###autoload
 (define-minor-mode omni-tags-mode
