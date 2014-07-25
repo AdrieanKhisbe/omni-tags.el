@@ -9,9 +9,13 @@
 ;; §Tose! ?? what _ symbolize in regexp? match ;?
 ;; §Todo: make list of different keyword, more highlighted! for instance: TD TF TI TM
 
-;; §see: name?
+;; ¤> Customs
+(defgroup omni-tags nil
+  "Customs for `omni-tags' modes."
+  );; :group 'tools ¤maybe
+
 (defcustom ot:primary-tag "§" "Primary Tag Symbol (associated with actions)"
-  :type 'string  :group 'omni-tags) ; §maybe:char?
+  :type 'string  :group 'omni-tags) ; §maybe:char? ;§todo:add syze constraint
 (defcustom ot:secondary-tag "¤" "Secondary Tag Symbol. (associated with descriptions)"
   :type 'string  :group 'omni-tags)
 ;; ¤maybe: special tag for headings? [and special face: easier to identify: for navigation, map..]
@@ -67,8 +71,8 @@
 
 ;; New tags to create
 ;; §maybe: final : that match till the end of line
-;;§todo: symple tag not in bold
-
+;; §todo: symple tag not in bold
+;;        just symbol. <¤> <<¤>>
 ;; §note: peut etre à supprimer
 (setq ot:tag-patterns
       (list
