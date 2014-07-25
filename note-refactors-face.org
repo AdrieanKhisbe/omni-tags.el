@@ -8,6 +8,7 @@ make branch
 - make doc
 - define face group cf magit
 - defconst: -> compil, cf magit
+- note: KEEP Switch (mais peut etre renommer mode dependant?)
 # note: set-line face
 
 # note: bizarement avec add-keywords magit use font-loc faces.
