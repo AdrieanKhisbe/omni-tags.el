@@ -1,6 +1,5 @@
 ;;; §todo: header!!
 ;;; By Adriean Khisbe
-;;; §building: for nom, just import
 
 (require 'pcre2el) ;§maybe: only use in development for starting performance issue
 (require 'omni-tags-face)
@@ -12,7 +11,7 @@
 ;; ¤> Customs
 (defgroup omni-tags nil
   "Customs for `omni-tags' modes."
-  );; :group 'tools ¤maybe
+  :group 'convenience) ; ¤note: hesitated with tools
 
 (defcustom ot:primary-tag "§" "Primary Tag Symbol (associated with actions)"
   :type 'string  :group 'omni-tags) ; §maybe:char? ;§todo:add syze constraint
@@ -42,11 +41,10 @@
   ;; §maybe: get ride of pcre2el dependecy?
   )
 
-;;; Keywords Definition:
+;;; ¤> Keywords Definition:
 
 ;; ¤doc: Keyword: form: more doc at `font-lock-keywords'
 ;; MATCH-HIGHLIGH (SUBEXP FACENAME [OVERRIDE [LAXMATCH]])
-
 
 (defvar ot:tag-wonder-keyword
   `(,(ot:make-pattern "%s([!?¿¡]+)");; §TODO: extract to var
@@ -60,14 +58,14 @@
     ;; §tofix: combo a:b:c
     (1 'ot:face:symbol      ,ot:override)
     (2 'ot:face:name        ,ot:override)
-    (4 'ot:face:separator   ,ot:override ,ot:optional)
+    (4 'ot:face:separator   ,ot:override ,ot:optional) ;§maybe, delete (), and use wrapping.
     (5 'ot:face:details     ,ot:override ,ot:optional)
     (6 'ot:face:ponctuation ,ot:override ,ot:optional))
   "Complex Tag §todo: repeat the same one without quotes")
 
 (defvar ot:tag-heading ;name to find
   `(,(rxt-pcre-to-elisp (format "(%s)(>+)" ot:secondary-tag))
-    (1 'ot:face:symbol  ,ot:override)
+    (1 'ot:face:symbol  ,ot:override) ;§maybe: try <¤>
     (2 'ot:face:ponctuation ,ot:override)) ;§maybe: grab the rest of the line (eventual title)
   "heading tag")
 ;; §later: add funtions. and specific navigation to emulate org
@@ -77,6 +75,7 @@
 ;; §maybe: final : that match till the end of line
 ;; §todo: symple tag not in bold
 ;;        just symbol. <¤> <<¤>>
+;;        place holder. (temporary): (¤) [¤] {¤}
 ;; §note: peut etre à supprimer
 (setq ot:tag-patterns
       (list

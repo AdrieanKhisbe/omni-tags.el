@@ -9,6 +9,8 @@
 ;; ¤maybe:doc add reference to the mode?
 ;;        trailing dot?
 
+;; ¤todo:custom: tweak colors
+
 (defgroup omni-tags-face nil
   "Faces for `omni-tags'."
   :group 'omni-tags)
