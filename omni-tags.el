@@ -38,7 +38,9 @@
 
 (defvar ot:tag-patterns nil "Ensemble des patterns à matcher")
 ;; §HERE : todo ;: créer variables spécifiques: single, composed, complex.
-;; § voir comment late bind le tag
+;; § voir comment late bind le tag. [ ou refresh ]
+(defvar ot:override t "Value to use in keyword pattern: possible value: t,append/prepend") ;; try change
+(defconst ot:optional "laxmatch" "Specify that this part of the keyword is not compulsary")
 
 ;; (defvar ot:pattern-simple  "Pattern for single" )
 (defun ot:make-pattern (regexp)
@@ -56,26 +58,26 @@
 ;; LAXMATCH: dont throw error if a sibexp is not match
 
 (defvar ot:tag-wonder-keyword
- `(,(ot:make-pattern "%s([!?¿¡]+)");; §TODO: extract to var
-    (1 ot:fsymb t)
-    (2 ot:fponct t))
+  `(,(ot:make-pattern "%s([!?¿¡]+)");; §TODO: extract to var
+    (1 ,ot:fsymb ,ot:override)
+    (2 ,ot:fponct ,ot:override))
   "wonder/expression tag")
 ;; §maybe; extract defintion in function to enable to reevalute it (after change pattern)
 
 (defvar ot:tag-detailed-keyword
   `(,(ot:make-pattern "%s(['@\-_ [:alnum:]]+)(([:])([_,-;/[:alnum:]]+))*([:?!¡¿]+)?")
     ;; §tofix: combo a:b:c
-    (1 ot:fsymb t)
-    (2 ot:fname t)
-    (4 ot:fsep t "laxmatch")
-    (5 ot:fdet t "lax")
-    (6 ot:fponct t "laxmatch"))
+    (1 ,ot:fsymb  ,ot:override)
+    (2 ,ot:fname  ,ot:override)
+    (4 ,ot:fsep   ,ot:override ,ot:optional)
+    (5 ,ot:fdet   ,ot:override ,ot:optional)
+    (6 ,ot:fponct ,ot:override ,ot:optional))
   "Complex Tag §todo: repeat the same one without quotes")
 
 (defvar ot:tag-heading ;name to find
- `(,(rxt-pcre-to-elisp (format "(%s)(>+)" ot:secondary-tag))
-    (1 ot:fsymb t)
-    (2 ot:fponct t)) ;§maybe: grab the rest of the line (eventual title)
+  `(,(rxt-pcre-to-elisp (format "(%s)(>+)" ot:secondary-tag))
+    (1 ,ot:fsymb  ,ot:override)
+    (2 ,ot:fponct ,ot:override)) ;§maybe: grab the rest of the line (eventual title)
   "heading tag")
 ;; §later: add funtions. and specific navigation to emulate org
 
@@ -86,13 +88,13 @@
 
 ;; §note: peut etre à supprimer
 (setq ot:tag-patterns
-      `(
-	;; online si pas de sousexpr
-	( ,(ot:make-pattern "%s:\w*>")  . 'font-lock-warning-face) ; Inline, MArche en principe, pattern tofix
-	,ot:tag-detailed-keyword
-	,ot:tag-wonder-keyword
-	,ot:tag-heading
-	))
+      (list
+       ;; online si pas de sousexpr:
+       ;; ( ,(ot:make-pattern "%s:\w*>")  . 'font-lock-warning-face) ; Inline, MArche en principe, pattern tofix
+       ot:tag-detailed-keyword
+       ot:tag-wonder-keyword
+       ot:tag-heading
+       ))
 
   ;;; Coloration des tags des tags
 (defun ot:font-on ()
