@@ -1,6 +1,8 @@
-;;; Specials faces for `omni-tags-mode'
-;;; `ot' is the namepace prefix
+;;; omni-tags-face.el --- Specials faces for `omni-tags-mode'
+;;;
 
+;;; Commentary:
+;;; `ot' is the namepace prefix
 
 ;; §maybe: pass color as custom. (at least mine. haha.)
 ;; §maybe: switch about face occurs here? (option require?)
@@ -10,6 +12,8 @@
 ;;        trailing dot?
 
 ;; ¤todo:custom: tweak colors
+
+;;; Code:
 
 (defgroup omni-tags-face nil
   "Faces for `omni-tags'."
@@ -58,3 +62,5 @@
 
 
 (provide 'omni-tags-face)
+
+;;; omni-tags-face.el ends here

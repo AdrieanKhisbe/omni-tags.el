@@ -1,5 +1,11 @@
-;;; §todo: header!!
+;;; omni-tags.el --- ¤Highlight and §Actions for Tags
 ;;; By Adriean Khisbe
+;;; §full header to do
+
+
+;;; Commentary:
+;; §todo: install
+
 
 (require 'pcre2el) ;§maybe: only use in development for starting performance issue
 (require 'omni-tags-face)
@@ -9,18 +15,20 @@
 ;; §Todo: make list of different keyword, more highlighted! for instance: TD TF TI TM
 
 ;; ¤> Customs
+;;; Code:
+
 (defgroup omni-tags nil
   "Customs for `omni-tags' modes."
   :group 'convenience) ; ¤note: hesitated with tools
 
-(defcustom ot:primary-tag "§" "Primary Tag Symbol (associated with actions)"
+(defcustom ot:primary-tag "§" "Primary Tag Symbol (associated with actions)."
   :type 'string  :group 'omni-tags) ; §maybe:char? ;§todo:add syze constraint
 
-(defcustom ot:secondary-tag "¤" "Secondary Tag Symbol. (associated with descriptions)"
+(defcustom ot:secondary-tag "¤" "Secondary Tag Symbol (associated with descriptions)."
   :type 'string  :group 'omni-tags)
 ;; ¤maybe: special tag for headings? [and special face: easier to identify: for navigation, map..]
 
-(defvar ot:tag-patterns nil "Ensemble des patterns à matcher")
+(defvar ot:tag-patterns nil "Ensemble des patterns à matcher.")
 ;; §HERE : todo ;: créer variables spécifiques: single, composed, complex.
 ;; §see comment late bind le tag. [ ou refresh ]
 
@@ -30,13 +38,14 @@
 - append/prepend: merge of existing fontification (prepend comes first)
 
 - keep: only parts not already fontified are highlighted") ;; ¤maybe:try change
-(defconst ot:optional "laxmatch" "Specify that this part of the keyword is not compulsary. (dont throw error if a subexp is not match)")
+(defconst ot:optional "laxmatch"
+  "Specify that this part of the keyword is not compulsary: don't throw error if a subexp is not match.")
 
 ;; ¤maybe (defvar ot:pattern-simple  "Pattern for single" )
 ;; maybe could enforce number of matching () to validate a pattern [special vaildation function for custom]
 
 (defun ot:make-pattern (regexp)
-  "Create a pattern. Replace first %s with tag symbol, and convert pcre format to emacs regexp"
+  "Create a pattern.  Replace first %s with tag symbol, and convert REGEXP writen in pcre format to Emacs regexp."
   (rxt-pcre-to-elisp (format regexp (format "(%s+|%s+)" ot:primary-tag ot:secondary-tag)))
   ;; §maybe: get ride of pcre2el dependecy?
   )
@@ -47,27 +56,27 @@
 ;; MATCH-HIGHLIGH (SUBEXP FACENAME [OVERRIDE [LAXMATCH]])
 
 (defvar ot:tag-wonder-keyword
-  `(,(ot:make-pattern "%s([!?¿¡]+)");; §TODO: extract to var
-    (1 'ot:face:symbol  ,ot:override)
-    (2 'ot:face:ponctuation ,ot:override))
-  "wonder/expression tag")
+ `(,(ot:make-pattern "%s([!?¿¡]+)");; §TODO: extract to var
+    (1 ot:fsymb t)
+    (2 ot:fponct t))
+  "Wonder/expression tag.")
 ;; §maybe; extract defintion in function to enable to reevalute it (after change pattern)
 
 (defvar ot:tag-detailed-keyword
   `(,(ot:make-pattern "%s(['@\-_ [:alnum:]]+)(([:])([_,-;/[:alnum:]]+))*([:?!¡¿]+)?")
     ;; §tofix: combo a:b:c
-    (1 'ot:face:symbol      ,ot:override)
-    (2 'ot:face:name        ,ot:override)
-    (4 'ot:face:separator   ,ot:override ,ot:optional) ;§maybe, delete (), and use wrapping.
-    (5 'ot:face:details     ,ot:override ,ot:optional)
-    (6 'ot:face:ponctuation ,ot:override ,ot:optional))
-  "Complex Tag §todo: repeat the same one without quotes")
+    (1 ot:fsymb t)
+    (2 ot:fname t)
+    (4 ot:fsep t "laxmatch")
+    (5 ot:fdet t "lax")
+    (6 ot:fponct t "laxmatch"))
+  "Complex Tag §todo: repeat the same one without quotes.")
 
 (defvar ot:tag-heading ;name to find
-  `(,(rxt-pcre-to-elisp (format "(%s)(>+)" ot:secondary-tag))
-    (1 'ot:face:symbol  ,ot:override) ;§maybe: try <¤>
-    (2 'ot:face:ponctuation ,ot:override)) ;§maybe: grab the rest of the line (eventual title)
-  "heading tag")
+ `(,(rxt-pcre-to-elisp (format "(%s)(>+)" ot:secondary-tag))
+    (1 ot:fsymb t)
+    (2 ot:fponct t)) ;§maybe: grab the rest of the line (eventual title)
+  "Heading tag.")
 ;; §later: add funtions. and specific navigation to emulate org
 
 
@@ -88,7 +97,7 @@
 
   ;;; Coloration des tags des tags
 (defun ot:font-on ()
-  "Adds fontifications for `omni-tags'
+  "Add fontifications for `omni-tags'.
 Keywords are stored in list `ot:tag-patterns'."
   (font-lock-add-keywords
    nil  ; ¤doc: Mode, if nil means that it's applied to current buffer. otherwise specify mode
@@ -97,14 +106,14 @@ Keywords are stored in list `ot:tag-patterns'."
 
 
 (defun ot:font-off ()
-  "Remove fontifications for `omni-tags'"                                       ;
+  "Remove fontifications for `omni-tags'."                                       ;
   (mapcar (lambda (keyword) (font-lock-add-keywords nil keyword)) ot:tag-patterns)
   (font-lock-fontify-buffer))
 
   ;;; ¤* Utils fonctions
 ;; §todo: autoload
 (defun ot:occur-tags ()
-  "Call occur on My §tags"
+  "Call occur on My §tags."
   (interactive)
   (push-mark)
   (occur "§\\w+" )) ;; §TODO: use pattern!
@@ -113,7 +122,7 @@ Keywords are stored in list `ot:tag-patterns'."
 
 ;; §maybe cycle?
 (defun ot:next-tags ()
-  "Go to next §tags"
+  "Go to next §tags."
   (interactive)
   (push-mark) ;; §maybe: not if previous command was either next/previous tag? ¤maybe: configurable behavior?
   ;; §maybe: special mark ring?
@@ -123,7 +132,7 @@ Keywords are stored in list `ot:tag-patterns'."
 ;; §maybe: si ressaye, revient au début?
 
 (defun ot:previous-tags ()
-  "Go to prev §tags"
+  "Go to prev §tags."
   (interactive)
   (unless (search-backward-regexp "§\\w+" nil t)
     (message "No Tags Before!")))
@@ -157,4 +166,7 @@ Keywords are stored in list `ot:tag-patterns'."
 ;; (add-hook 'org-mode-hook 'omni-tags-mode)
 ;; (add-hook 'prog-mode-hook 'omni-tags-mode)
 
+
 (provide 'omni-tags)
+
+;;; omni-tags.el ends here
