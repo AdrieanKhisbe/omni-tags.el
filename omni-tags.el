@@ -46,25 +46,25 @@
 
 (defvar ot:tag-wonder-keyword
   `(,(ot:make-pattern "%s([!?¿¡]+)");; §TODO: extract to var
-    (1 'ot:tag-symbol-face  ,ot:override)
-    (2 'ot:ponctuation-face ,ot:override))
+    (1 'ot:face:symbol  ,ot:override)
+    (2 'ot:face:ponctuation ,ot:override))
   "wonder/expression tag")
 ;; §maybe; extract defintion in function to enable to reevalute it (after change pattern)
 
 (defvar ot:tag-detailed-keyword
   `(,(ot:make-pattern "%s(['@\-_ [:alnum:]]+)(([:])([_,-;/[:alnum:]]+))*([:?!¡¿]+)?")
     ;; §tofix: combo a:b:c
-    (1 'ot:tag-symbol-face  ,ot:override)
-    (2 'ot:name-face        ,ot:override)
-    (4 'ot:ponctuation-face ,ot:override ,ot:optional)
-    (5 'ot:details-face     ,ot:override ,ot:optional)
-    (6 'ot:ponctuation-face ,ot:override ,ot:optional))
+    (1 'ot:face:symbol      ,ot:override)
+    (2 'ot:face:name        ,ot:override)
+    (4 'ot:face:separator   ,ot:override ,ot:optional)
+    (5 'ot:face:details     ,ot:override ,ot:optional)
+    (6 'ot:face:ponctuation ,ot:override ,ot:optional))
   "Complex Tag §todo: repeat the same one without quotes")
 
 (defvar ot:tag-heading ;name to find
   `(,(rxt-pcre-to-elisp (format "(%s)(>+)" ot:secondary-tag))
-    (1 'ot:tag-symbol-face  ,ot:override)
-    (2 'ot:ponctuation-face ,ot:override)) ;§maybe: grab the rest of the line (eventual title)
+    (1 'ot:face:symbol  ,ot:override)
+    (2 'ot:face:ponctuation ,ot:override)) ;§maybe: grab the rest of the line (eventual title)
   "heading tag")
 ;; §later: add funtions. and specific navigation to emulate org
 
