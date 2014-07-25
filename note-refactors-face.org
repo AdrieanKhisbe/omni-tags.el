@@ -1,0 +1,32 @@
+make branch
+- kill-var -> see what happen.
+- add inheritence (fronm font-lock
+  (mybe create my font-lock-annotation super??)
+  plutot que d'avoir dépenedances
+- Later: liste: (class clolor) (background dark/light)) (autres propriétés
+- maybe backround??
+- make doc
+- define face group cf magit
+- defconst: -> compil, cf magit
+# note: set-line face
+
+# note: bizarement avec add-keywords magit use font-loc faces.
+# §ask stack overflow
+
+
+# ¤note: §maybe: peut avoir fonction à la place de regexp?
+
+§add keep to override lide.
+prepend: ce qu(on prend va avant!
+
+A compiled keywords list starts with t.  It is produced internal by `font-lock-compile-keywords'
+
+
+;; Note that `defface' will not overwrite any faces declared above via
+;; `custom-declare-face'.
+
+§search!! (jit-lock-function 44) signaled (void-variable ot:tag-symbol-fac\
+      e)
+> pourquoi magit les déclare pas?
+
+foreground et pas color :facepalm:
