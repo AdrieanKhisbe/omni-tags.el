@@ -13,8 +13,6 @@
   "Faces for `omni-tags'."
   :group 'omni-tags)
 
-;; ¤note: defface variable with value is symbol (itself)
-
 (defface ot:face:default
   '((t )) ;; §maybe: background, or properties/keymap whatever
   "SuperFace for Omni Tags"

@@ -16,6 +16,7 @@
 
 (defcustom ot:primary-tag "§" "Primary Tag Symbol (associated with actions)"
   :type 'string  :group 'omni-tags) ; §maybe:char? ;§todo:add syze constraint
+
 (defcustom ot:secondary-tag "¤" "Secondary Tag Symbol. (associated with descriptions)"
   :type 'string  :group 'omni-tags)
 ;; ¤maybe: special tag for headings? [and special face: easier to identify: for navigation, map..]
@@ -24,11 +25,16 @@
 ;; §HERE : todo ;: créer variables spécifiques: single, composed, complex.
 ;; §see comment late bind le tag. [ ou refresh ]
 
-(defvar ot:override t "Value to use in keyword pattern: possible value: t,append/prepend") ;; try change
-(defconst ot:optional "laxmatch" "Specify that this part of the keyword is not compulsary")
+(defvar ot:override t
+  "Value to use in keyword pattern, possible values:
+- t: override existing fontification
+- append/prepend: merge of existing fontification (prepend comes first)
+
+- keep: only parts not already fontified are highlighted") ;; ¤maybe:try change
+(defconst ot:optional "laxmatch" "Specify that this part of the keyword is not compulsary. (dont throw error if a subexp is not match)")
 
 ;; ¤maybe (defvar ot:pattern-simple  "Pattern for single" )
-;; maybe could enforce number of matching () to validate a pattern [speial vaildation function for custom]
+;; maybe could enforce number of matching () to validate a pattern [special vaildation function for custom]
 
 (defun ot:make-pattern (regexp)
   "Create a pattern. Replace first %s with tag symbol, and convert pcre format to emacs regexp"
@@ -40,9 +46,7 @@
 
 ;; ¤doc: Keyword: form: more doc at `font-lock-keywords'
 ;; MATCH-HIGHLIGH (SUBEXP FACENAME [OVERRIDE [LAXMATCH]])
-;; override: t:overidde, append/preprend: merge of existing fontification!
-;; use prepend to "override" comment face  §idea: make this behavior configurable
-;; LAXMATCH: dont throw error if a sibexp is not match
+
 
 (defvar ot:tag-wonder-keyword
   `(,(ot:make-pattern "%s([!?¿¡]+)");; §TODO: extract to var
@@ -85,7 +89,8 @@
 
   ;;; Coloration des tags des tags
 (defun ot:font-on ()
-  "Adds font-lock for my personals §Tags"                                       ;
+  "Adds fontifications for `omni-tags'
+Keywords are stored in list `ot:tag-patterns'."
   (font-lock-add-keywords
    nil  ; ¤doc: Mode, if nil means that it's applied to current buffer. otherwise specify mode
    ot:tag-patterns)
@@ -93,7 +98,7 @@
 
 
 (defun ot:font-off ()
-  "Remove font-lock for my personals §Tags"
+  "Remove fontifications for `omni-tags'"                                       ;
   (mapcar (lambda (keyword) (font-lock-add-keywords nil keyword)) ot:tag-patterns)
   (font-lock-fontify-buffer))
 
