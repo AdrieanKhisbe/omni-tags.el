@@ -86,15 +86,24 @@
 ;; §maybe; extract defintion in function to enable to reevalute it (after change pattern)
 
 (defvar ot:tag-detailed-keyword
-
-  `(,(ot:make-pattern "%s(['@\-_ [:alnum:]]+)(([:])([_,-;/[:alnum:]]+))*([:?!¡¿]+)?")
-    ;; §tofix: combo a:b:c
+  `(,(ot:make-pattern "%s(['@\-_ [:alnum:]]+)(([:])([_,-;/[:alnum:]]+))*([?!¡¿]+)?") ;§todo: exlude :
+    ;; §tofix: combo a:b:c -> might need to specify something. or hackyhacky for combo.
     (1 'ot:face:symbol      ,ot:override)
     (2 'ot:face:name        ,ot:override)
     (4 'ot:face:separator   ,ot:override ,ot:optional) ;§maybe, delete (), and use wrapping.
     (5 'ot:face:details     ,ot:override ,ot:optional)
     (6 'ot:face:ponctuation ,ot:override ,ot:optional))
   "Complex Tag §todo: repeat the same one without quotes")
+
+(defvar ot:whatever-follow-keyword ;§torename
+  `(,(ot:make-pattern "%s(['@\-_ [:alnum:]]+)(:)( .*)?$");; §TODO: extract to custom
+    (1 'ot:face:symbol      ,ot:override)
+    (2 'ot:face:name        ,ot:override)
+    (3 'ot:face:separator   ,ot:override) ;§maybe, delete (), and use wrapping.
+    (4 'ot:face:details     ,ot:override ,ot:optional))
+  "Wonder/expression tag.")
+;; §maybe; extract defintion in function to enable to reevalute it (after change pattern)
+
 
 (defvar ot:tag-heading ;name to find
   `(,(rxt-pcre-to-elisp (format "(%s)(>+)" ot:secondary-tag))
@@ -104,21 +113,17 @@
 
 ;; §later: add funtions. and specific navigation to emulate org
 
-
-;; New tags to create
-;; §maybe: final : that match till the end of line
+;; ¤note: New tags to create
 ;; §todo: symple tag not in bold
 ;;        just symbol. <¤> <<¤>>
 ;;        place holder. (temporary): (¤) [¤] {¤}
-;; §note: peut etre à supprimer
 (setq ot:tag-patterns
-      (list
-       ;; online si pas de sousexpr:
-       ;; ( ,(ot:make-pattern "%s:\w*>")  . 'font-lock-warning-face) ; Inline, MArche en principe, pattern tofix
-       ot:tag-detailed-keyword
-       ot:tag-wonder-keyword
-       ot:tag-heading
-       ))
+      (list `(,ot:primary-tag  . 'ot:face:symbol) ; Inline
+	    ot:tag-detailed-keyword
+	    ot:tag-wonder-keyword
+	    ot:tag-heading
+	    ot:whatever-follow-keyword
+	    ))
 
   ;;; Coloration des tags des tags
 (defun ot:font-on ()
