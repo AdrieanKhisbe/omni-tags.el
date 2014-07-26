@@ -79,27 +79,29 @@
 ;; MATCH-HIGHLIGH (SUBEXP FACENAME [OVERRIDE [LAXMATCH]])
 
 (defvar ot:tag-wonder-keyword
- `(,(ot:make-pattern "%s([!?¿¡]+)");; §TODO: extract to var
-    (1 ot:fsymb t)
-    (2 ot:fponct t))
+  `(,(ot:make-pattern "%s([!?¿¡]+)");; §TODO: extract to custom
+    (1 'ot:face:symbol  ,ot:override)
+    (2 'ot:face:ponctuation ,ot:override))
   "Wonder/expression tag.")
 ;; §maybe; extract defintion in function to enable to reevalute it (after change pattern)
 
 (defvar ot:tag-detailed-keyword
+
   `(,(ot:make-pattern "%s(['@\-_ [:alnum:]]+)(([:])([_,-;/[:alnum:]]+))*([:?!¡¿]+)?")
     ;; §tofix: combo a:b:c
-    (1 ot:fsymb t)
-    (2 ot:fname t)
-    (4 ot:fsep t "laxmatch")
-    (5 ot:fdet t "lax")
-    (6 ot:fponct t "laxmatch"))
-  "Complex Tag §todo: repeat the same one without quotes.")
+    (1 'ot:face:symbol      ,ot:override)
+    (2 'ot:face:name        ,ot:override)
+    (4 'ot:face:separator   ,ot:override ,ot:optional) ;§maybe, delete (), and use wrapping.
+    (5 'ot:face:details     ,ot:override ,ot:optional)
+    (6 'ot:face:ponctuation ,ot:override ,ot:optional))
+  "Complex Tag §todo: repeat the same one without quotes")
 
 (defvar ot:tag-heading ;name to find
- `(,(rxt-pcre-to-elisp (format "(%s)(>+)" ot:secondary-tag))
-    (1 ot:fsymb t)
-    (2 ot:fponct t)) ;§maybe: grab the rest of the line (eventual title)
-  "Heading tag.")
+  `(,(rxt-pcre-to-elisp (format "(%s)(>+)" ot:secondary-tag))
+    (1 'ot:face:symbol  ,ot:override) ;§maybe: try <¤>
+    (2 'ot:face:ponctuation ,ot:override)) ;§maybe: grab the rest of the line (eventual title)
+  "heading tag")
+
 ;; §later: add funtions. and specific navigation to emulate org
 
 
