@@ -1,6 +1,0 @@
-- Update documentation
-- Make Readme
-- get date.
-- get [future] github url
-
-GET GET!!!

@@ -1,4 +1,6 @@
-* Initials noytes
+Diverse [Personal] Building Notes for omni-tags
+
+* Initials notes
 - faire la liste des mots clefs
 - personnal font
 - voir après s'il peuvent pas etre parsé, et repertorié à la Eclispe
@@ -39,13 +41,60 @@ du coup fait devoir decliner les match, mais sans des ???
 
 Doit utiliser une variable fontlock pour surcharge>>> §PK?
 
+* Refactors
+** Faces
+- Later: liste: (class clolor) (background dark/light)) (autres propriétés
+- maybe backround??
+- defconst: -> compil, cf magit
+# note: set-line face
+
+# ¤note: §maybe: peut avoir fonction à la place de regexp?
+
+A compiled keywords list starts with t.  It is produced internal by `font-lock-compile-keywords'
+
+;; Note that `defface' will not overwrite any faces declared above via
+;; `custom-declare-face'.
+
+# " ... foreground et pas color :facepalm:
+
+Note: pas de defvar nécessaire avec un quote devant le nom de la face.
+Si veut utiliser var: defface variable with value is symbol (itself)
+
+** TODO Package
+- Update documentation
+- Make Readme
+- get date.
+- get [future] github url
+
+GET GET!!!
+
 * Dilemmas & Ideas
 
-# §see: 
-Namespace? (for function and var.): 
-private namespace?
+# §see:
+Namespace? (for function and var.): ¤maybe: replace ':' with '-' to follow convention?
 
-variable to handle action/description tag symbol
+Variable to handle action/description tag symbol
 
 
-Cask: handle dependancies?
+** Features
+
+*** Templates Keywords
+
+Customize keyword recipes?
+maybe defined fragment, components. [pattern + highligh]
+-> then will buil all the keyword with it
+Sym Name Sep ...
+
+could have a time fragment. [that should be headen]
+syntax pour choper la date (serait en non visible??)
+utiliser surtout pour les here: fonction pour intégrer, grepper, etc.
+*** Outline and placeholder
+<¤>.
+Navigations keys.
+
+Liens avec register position?
+
+*** Navigation and search
+
+Special keymap on tags?
+§dig: [see properties section on elisp doc]
