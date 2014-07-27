@@ -80,6 +80,16 @@ Sym Name Sep ...
 could have a time fragment. [that should be headen]
 syntax pour choper la date (serait en non visible??)
 utiliser surtout pour les here: fonction pour intégrer, grepper, etc.
+
+Next step:
+- manière de gérer répetition
+- gestion optionnels [voire alternative]
+
+maybe: déduire recherches spécialisée depuis recipes?
+
+
+List de mots clefs. [et fonte associées]
+
 *** Outline and placeholder
 <¤>.
 Navigations keys.

@@ -36,30 +36,29 @@
 
 ;; §PROTO
 ;; §pattern, face.
-(setq ot:fragment:SYMB `(,(format "\\(%s\\|%s\\)" ot:primary-tag ot:secondary-tag)
+(defconst ot:fragment:SYMB `(,(format "\\(%s\\|%s\\)" ot:primary-tag ot:secondary-tag)
 			 'ot:face:symbol))
-(setq ot:fragment:TAG '("\\(['@\\-_ [:alnum:]]\\)" ; ¤note:novarfornow
+(defconst ot:fragment:TAG '("\\(['@\\-_ [:alnum:]]\\)" ; ¤note:novarfornow
 			'ot:face:ponctuation))
-;; §maybe: add leading symbol?
+;; §maybe: add leading symbol? [when if wont be a cons cell anymore.]
 
-;; §maybe:rename
-(defun build-pattern (&rest fragments)
-  (mapconcat 'car fragments  ""))
-(defun build-keywords-attributes( &rest fragments) ;§rename
+
+(defun build-keywords-definition(&rest fragments)
   (let ((current-index 1)
 	(current-list '()))
+    ;; ajoute regexp
+    (push (mapconcat 'car fragments  "") current-list)
+    ;; ajoute match highlights
     (mapc (lambda(frag)
-	    ;; §maybe: build pattern here.
-	    (add-to-list current-list `(,current-index ,(cadr frag) ,ot:override)))
-	    ;; §later: override(late eval) + optional? [build recipe before]
+	    (push  `(,current-index ,(cadr frag) ,ot:override)  ;§rename
+		   current-list)
+	      (setq current-index (1+ current-index)))
 	  fragments)
-    )
-  current-list
-  )
-(build-pattern ot:fragment:SYMB ot:fragment:TAG)
+    (reverse current-list )))
+;; §later: override(late eval) + optional? [build recipe before]
+;;         pattern repetition. [maybe ]
+;; §tmp:
 (build-keywords-attributes ot:fragment:SYMB ot:fragment:TAG)
-;; §maybe: do all at once?
-(cadr ot:fragment:TAG)
 
 ;; §maybe: customize component
 
