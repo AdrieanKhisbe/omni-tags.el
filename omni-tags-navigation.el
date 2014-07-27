@@ -49,14 +49,14 @@ Pattern is specified by `oq:navigation-regexp'."
   (interactive)
   (push-mark) ;; §maybe: not if previous command was either next/previous tag? ¤maybe: configurable behavior?
   ;; §maybe: special mark ring?
-  ;; §check:HERE if looking at... faut faire deux recherches. (ou hack, bouge d'un pas)
-
-  (if (search-forward-regexp oq:navigation-regexp nil t)
-       ;§todo: adapt movement-> go back to?
-      (goto-char (match-beginning 0));§goto? §check: might set the mark due to the adive
-      ;; §todo: retrieve match position
-    ;;§todo: make generic to adapt to tag symbol: : default arg symbol (that would be call by next-primary/secondary)
-    (message "No More Founds Tags!")))
+  (if (search-forward-regexp oq:navigation-regexp nil t
+			     ;; count value:
+			     (if (looking-at oq:navigation-regexp) 2 1))
+      (goto-char (match-beginning 0)); §check: might set the mark due to the advice
+    (progn (message "No More Founds Tags!")
+	   (pop-mark) ; avoid marks to accumulate oonce end of buffer
+	   )))
+;;§todo: make generic to adapt to tag symbol: : default arg symbol (that would be call by next-primary/secondary)
 ;; §maybe: si ressaye, revient au début? [check last command.et s'assurer qu'il y a un §]
 
 (defun ot:previous-tags ()
@@ -64,8 +64,10 @@ Pattern is specified by `oq:navigation-regexp'."
 
 Pattern is specified by `oq:navigation-regexp'."
   (interactive)
+  (push-mark)
   (unless (search-backward-regexp oq:navigation-regexp nil t)
-    (message "No Tags Before!")))
+    (message "No Tags Before!")
+    (pop-mark)))
 
 (provide 'omni-tags-navigation)
 
