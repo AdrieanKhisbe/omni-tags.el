@@ -25,31 +25,46 @@
 
 ;;; Code:
 
+(defvar oq:navigation-regexp "§\\w+"
+  "Navigation regexp used in all the navigation function")
+;; §maybe: distinguish primary, secondary
+;; §todo: adapt to customs.
+
 ;; §todo: autoload
 (defun ot:occur-tags ()
-  "Call occur on My §tags."
+  "Call occur on My §tags.
+
+Pattern is specified by `oq:navigation-regexp'."
   (interactive)
   (push-mark)
-  (occur "§\\w+" )) ;; §TODO: use pattern!
+  (occur oq:navigation-regexp)) ;; §TODO: use pattern!
 ;; §next with helm ;moccur...
 ;; couper en deux avec 1&2ary?
 
 ;; §maybe cycle?
 (defun ot:next-tags ()
-  "Go to next §tags."
+  "Go to next §tags.
+
+Pattern is specified by `oq:navigation-regexp'."
   (interactive)
   (push-mark) ;; §maybe: not if previous command was either next/previous tag? ¤maybe: configurable behavior?
   ;; §maybe: special mark ring?
-  (if (search-forward-regexp "§\\w+" nil t)
-      (backward-word) ;§todo: adapt movement
+  ;; §check:HERE if looking at... faut faire deux recherches. (ou hack, bouge d'un pas)
+
+  (if (search-forward-regexp oq:navigation-regexp nil t)
+       ;§todo: adapt movement-> go back to?
+      (goto-char (match-beginning 0));§goto? §check: might set the mark due to the adive
+      ;; §todo: retrieve match position
     ;;§todo: make generic to adapt to tag symbol: : default arg symbol (that would be call by next-primary/secondary)
     (message "No More Founds Tags!")))
-;; §maybe: si ressaye, revient au début?
+;; §maybe: si ressaye, revient au début? [check last command.et s'assurer qu'il y a un §]
 
 (defun ot:previous-tags ()
-  "Go to prev §tags."
+  "Go to prev §tags.
+
+Pattern is specified by `oq:navigation-regexp'."
   (interactive)
-  (unless (search-backward-regexp "§\\w+" nil t)
+  (unless (search-backward-regexp oq:navigation-regexp nil t)
     (message "No Tags Before!")))
 
 (provide 'omni-tags-navigation)
