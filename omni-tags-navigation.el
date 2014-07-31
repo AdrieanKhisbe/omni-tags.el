@@ -10,6 +10,7 @@
 ;;; Commentary:
 ;; `ot' is the namepace prefix
 
+
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
@@ -25,12 +26,19 @@
 
 ;;; Code:
 
+;; §next with helm ;moccur...
+;; couper en deux avec 1&2ary?
+
+
 (defvar oq:navigation-regexp "§\\w+"
+  ;; §note: try, but crashed (format "\\(%s\\|%s\\)%s\\w+" oq:primary-tag oq:secondary-tag)
+  ;;        §maybe -> loading mode would reset theses variables (and font patterns)
+  ;;        factorize in refresh methods?
   "Navigation regexp used in all the navigation function")
 ;; §maybe: distinguish primary, secondary
 ;; §todo: adapt to customs.
 
-;; §todo: autoload
+;; §todo: autoload [might be more complicate since in subfile: (require omni-tags?? -> cyclic dep)]
 (defun ot:occur-tags ()
   "Call occur on My §tags.
 
@@ -38,8 +46,6 @@ Pattern is specified by `oq:navigation-regexp'."
   (interactive)
   (push-mark)
   (occur oq:navigation-regexp)) ;; §TODO: use pattern!
-;; §next with helm ;moccur...
-;; couper en deux avec 1&2ary?
 
 ;; §maybe cycle?
 (defun ot:next-tags ()
@@ -58,6 +64,8 @@ Pattern is specified by `oq:navigation-regexp'."
 	   )))
 ;;§todo: make generic to adapt to tag symbol: : default arg symbol (that would be call by next-primary/secondary)
 ;; §maybe: si ressaye, revient au début? [check last command.et s'assurer qu'il y a un §]
+;; §see: isearch-repeat dans isearch.el1326 [wrap function, sinon goto min/max -> var pour direction ]
+
 
 (defun ot:previous-tags ()
   "Go to prev §tags.

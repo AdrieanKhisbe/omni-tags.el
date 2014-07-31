@@ -97,7 +97,8 @@
   "Complex Tag §todo: repeat the same one without quotes")
 
 (defvar ot:whatever-follow-keyword ;§torename
-  `(,(ot:make-pattern "%s(['@\-_ [:alnum:]]+)(:)( .*)?$");; §TODO: extract to custom
+  `(,(ot:make-pattern "%s(['@\-_ [:alnum:]]+)(:)( [^¤§]*|$)")
+    ;; §TODO: extract to custom [word components and so
     (1 'ot:face:symbol      ,ot:override)
     (2 'ot:face:name        ,ot:override)
     (3 'ot:face:separator   ,ot:override) ;§maybe, delete (), and use wrapping.
@@ -118,6 +119,8 @@
 ;; §todo: symple tag not in bold
 ;;        just symbol. <¤> <<¤>>
 ;;        place holder. (temporary): (¤) [¤] {¤}
+;;        wrapped tag:  [§ abcb ]
+
 (setq ot:tag-patterns
       (list `(,ot:primary-tag  . 'ot:face:symbol) ; Inline
 	    ot:tag-detailed-keyword
