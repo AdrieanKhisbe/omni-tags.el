@@ -89,6 +89,8 @@
 (defvar ot:tag-detailed-keyword
   `(,(ot:make-pattern "%s(['@\-_ [:alnum:]]+)(([:])([_,-;/[:alnum:]]+))*([?!¡¿]+)?") ;§todo: exlude :
     ;; §tofix: combo a:b:c -> might need to specify something. or hackyhacky for combo.
+    ;; ¤note: semblerait que les répétition écrase les présents matching.
+    ;;        [ce qui est normalement le cas avec les regexp]
     (1 'ot:face:symbol      ,ot:override)
     (2 'ot:face:name        ,ot:override)
     (4 'ot:face:separator   ,ot:override ,ot:optional) ;§maybe, delete (), and use wrapping.
@@ -96,14 +98,20 @@
     (6 'ot:face:ponctuation ,ot:override ,ot:optional))
   "Complex Tag §todo: repeat the same one without quotes")
 
+;; §TODO: extract to custom [word components and so]
 (defvar ot:whatever-follow-keyword ;§torename
-  `(,(ot:make-pattern "%s(['@\-_ [:alnum:]]+)(:)( [^¤§]*|$)")
-    ;; §TODO: extract to custom [word components and so
+  `(,(ot:make-pattern "%s(['@\-_ [:alnum:]]+)(:)( [^¤§\n]*| +$)")
+    ;; ¤note: [^ … ] matches all characters not in the list, even newlines
     (1 'ot:face:symbol      ,ot:override)
     (2 'ot:face:name        ,ot:override)
     (3 'ot:face:separator   ,ot:override) ;§maybe, delete (), and use wrapping.
     (4 'ot:face:details     ,ot:override ,ot:optional))
-  "Wonder/expression tag.")
+  "Tag that grab all that follow on the current line.")
+
+;; §version :: qui prendrait tout jusqu'à ligne vide (ou fin du commentaire!!!)
+;; §see: \s<   comment starter \s(   open delimiter character    \s>   comment ender \s)   close delimiter character   \s!   generic comment delimiter
+;; §see: set up system to be able to proto more easily. [and light launch]
+
 ;; §maybe; extract defintion in function to enable to reevalute it (after change pattern)
 
 
