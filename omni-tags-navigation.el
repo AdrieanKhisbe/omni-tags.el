@@ -26,9 +26,12 @@
 
 ;;; Code:
 
-;; §next with helm ;moccur...
-;; couper en deux avec 1&2ary?
-
+;; §next with helm, moccur...
+;; couper en deux avec 1&2ary? [if so, where and how?]
+;; ¤maybe swicth for the navigation regexp: § ¤ or both.
+;; this way do not have to redefine function
+;; sinon/combo: advice générique qui gère les C-u, Cuu et let flag?
+;;   [si pattern wrap en faire vrai macro, pattern]
 
 (defvar oq:navigation-regexp "§\\w+"
   ;; §note: try, but crashed (format "\\(%s\\|%s\\)%s\\w+" oq:primary-tag oq:secondary-tag)
@@ -37,6 +40,18 @@
   "Navigation regexp used in all the navigation function")
 ;; §maybe: distinguish primary, secondary
 ;; §todo: adapt to customs.
+
+;; §draft
+(defun oq:count-tags () ; §see:primary-vs-secondary.
+  "count number of tag in the whole file"
+  (interactive)
+  (how-many oq:navigation-regexp (point-min) (point-max))
+  ;; §maybe: build pattern from keyword?
+  ;; §todo: extract intern function and make interactove say: There is ...
+  ;; // make it use the region if an selected
+    )
+
+;; §todo: functions to scan accross directory, project
 
 ;; §todo: autoload [might be more complicate since in subfile: (require omni-tags?? -> cyclic dep)]
 (defun ot:occur-tags ()
