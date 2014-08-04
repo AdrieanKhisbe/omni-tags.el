@@ -32,9 +32,35 @@
 ;; this way do not have to redefine function
 ;; sinon/combo: advice générique qui gère les C-u, Cuu et let flag?
 ;;   [si pattern wrap en faire vrai macro, pattern]
+;; §to apply to mutuiple buffer see:
+
+
+;; §inspired from http://emacsredux.com/blog/2013/07/17/advise-multiple-commands-in-the-same-manner/
+(defmacro advise-commands (advice-name commands &rest body)
+  "Apply advice named ADVICE-NAME to multiple COMMANDS.
+
+The body of the advice is in BODY."
+  `(progn
+     ,@(mapcar (lambda (command)
+                 `(defadvice ,command (before ,(intern (concat (symbol-name command) "-" advice-name)) activate)
+                    ,@body))
+               commands)))
+
+;; §first do a simple avice!!
+
+(defadvice ot:next-tags (around ot:next-tags-nary activate)
+  "Universal argument change tag pattern" ;§better doc
+  (let ((oq:navigation-regexp (case (car-safe current-prefix-arg)  ;; §extract macro
+				(4  "\\(§\\|¤\\)\\w+"); uninversal arg
+				(16 "¤\\w+"); Double uninversal arg -> relative
+				(t "§\\w+" ))))
+    ;; §later? add message??, custom?
+    ;; §bonux: find a way this persist for next invocations? [last command + last value var!]
+    ad-do-it))
+
 
 (defvar oq:navigation-regexp "§\\w+"
-  ;; §note: try, but crashed (format "\\(%s\\|%s\\)%s\\w+" oq:primary-tag oq:secondary-tag)
+  ;; ¤note: try, but crashed (format "\\(%s\\|%s\\)%s\\w+" oq:primary-tag oq:secondary-tag)
   ;;        §maybe -> loading mode would reset theses variables (and font patterns)
   ;;        factorize in refresh methods?
   "Navigation regexp used in all the navigation function")
