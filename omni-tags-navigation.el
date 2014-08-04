@@ -27,37 +27,6 @@
 ;;; Code:
 
 ;; §next with helm, moccur...
-;; couper en deux avec 1&2ary? [if so, where and how?]
-;; ¤maybe swicth for the navigation regexp: § ¤ or both.
-;; this way do not have to redefine function
-;; sinon/combo: advice générique qui gère les C-u, Cuu et let flag?
-;;   [si pattern wrap en faire vrai macro, pattern]
-;; §to apply to mutuiple buffer see:
-
-
-;; §inspired from http://emacsredux.com/blog/2013/07/17/advise-multiple-commands-in-the-same-manner/
-(defmacro advise-commands (advice-name commands &rest body)
-  "Apply advice named ADVICE-NAME to multiple COMMANDS.
-
-The body of the advice is in BODY."
-  `(progn
-     ,@(mapcar (lambda (command)
-                 `(defadvice ,command (before ,(intern (concat (symbol-name command) "-" advice-name)) activate)
-                    ,@body))
-               commands)))
-
-;; §first do a simple avice!!
-
-(defadvice ot:next-tags (around ot:next-tags-nary activate)
-  "Universal argument change tag pattern" ;§better doc
-  (let ((oq:navigation-regexp (case (car-safe current-prefix-arg)  ;; §extract macro
-				(4  "\\(§\\|¤\\)\\w+"); uninversal arg
-				(16 "¤\\w+"); Double uninversal arg -> relative
-				(t "§\\w+" ))))
-    ;; §later? add message??, custom?
-    ;; §bonux: find a way this persist for next invocations? [last command + last value var!]
-    ad-do-it))
-
 
 (defvar oq:navigation-regexp "§\\w+"
   ;; ¤note: try, but crashed (format "\\(%s\\|%s\\)%s\\w+" oq:primary-tag oq:secondary-tag)
@@ -75,7 +44,7 @@ The body of the advice is in BODY."
   ;; §maybe: build pattern from keyword?
   ;; §todo: extract intern function and make interactove say: There is ...
   ;; // make it use the region if an selected
-    )
+  )
 
 ;; §todo: functions to scan accross directory, project
 
@@ -117,6 +86,36 @@ Pattern is specified by `oq:navigation-regexp'."
   (unless (search-backward-regexp oq:navigation-regexp nil t)
     (message "No Tags Before!")
     (pop-mark)))
+
+
+;; ¤> rafinate commands to change pattern behavior based on Universal arguments/
+;; §later: extract non interactive function, and pass the mode as optional argument.
+
+;; §inspired from http://emacsredux.com/blog/2013/07/17/advise-multiple-commands-in-the-same-manner/
+(defmacro advise-around-commands (advice-name commands &rest body)
+  "Apply advice named ADVICE-NAME to multiple COMMANDS.
+
+The body of the advice is in BODY."
+  `(progn
+     ,@(mapcar (lambda (command)
+                 `(defadvice ,command (around ,(intern (concat (symbol-name command) "-" advice-name)) activate)
+		    ;; §maybe: replace hardcoded around by val (before by default)
+                    ,@body))
+               commands)))
+
+(advise-around-commands "nary" (ot:next-tags ot:previous-tags ot:occur-tags )
+			;; ¤note: liste des tags commands. à étendre avec nouvelles fonctions
+			(let ((oq:navigation-regexp (case (car-safe current-prefix-arg)  ;; §extract macro
+						      (4  "\\(§\\|¤\\)\\w+"); uninversal arg
+						      (16 "¤\\w+"); Double uninversal arg -> relative
+						      (t "§\\w+" ))))
+			  ad-do-it))
+;; ¤note: [si pattern wrap en faire vrai macro, pattern, de spécialisation commandes]
+;; §to apply to mutuiple buffer see: [for different namespaces!]
+;; §later? add message, §todo: extract custom
+;; §bonux: find a way this persist for next invocations? [last command + last value var!]
+
+
 
 (provide 'omni-tags-navigation)
 
