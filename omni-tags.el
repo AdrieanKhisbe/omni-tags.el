@@ -33,6 +33,7 @@
 ;;; Code:
 
 (require 'pcre2el) ;§maybe: only use in development for starting performance issue
+(require 'omni-tags-utils)
 (require 'omni-tags-face)
 (require 'omni-tags-navigation)
 
@@ -170,7 +171,7 @@ Keywords are stored in list `ot:tag-patterns'."
   "Colorize 'Personal tags' in the buffer."
   :lighter " §"
   :keymap (let ((map (make-sparse-keymap)))
-	    (define-key map (kbd "M-§") 'ot:next-tags)
+	    (define-key map (kbd "M-§") 'ot:next-tags) ;; ¤note: key should also be reevaluated.
 	    (define-key map (kbd "C-§") 'ot:previous-tags)
 	    (define-key map (kbd "C-M-§") 'ot:occur-tags)
             map)

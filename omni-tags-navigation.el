@@ -26,6 +26,7 @@
 
 ;;; Code:
 
+(require 'omni-tags-utils)
 ;; §next with helm, moccur...
 
 (defvar oq:navigation-regexps '("§\\w+" "\\(§\\|¤\\)\\w+" "¤\\w+")
@@ -33,38 +34,8 @@
   ;; §maybe -> loading mode would reset theses variables (and font patterns)
   ;;        factorize in refresh methods?
   "Navigation regexp used in all the navigation function. (normal, one universal, two universal)")
-;; §maybe: distinguish primary, secondary
 ;; §todo: adapt to customs.
 
-
-;; ¤> rafinate commands to change pattern behavior based on Universal arguments/
-;; §later: extract non interactive function, and pass the mode as optional argument.
-
-;; §inspired from http://emacsredux.com/blog/2013/07/17/advise-multiple-commands-in-the-same-manner/
-(defmacro defun-tagary (function-name args doc &rest body)
-  "Macro to create interactive commands where \\[universal-argument] would enable switch between primary and secondary tag"
-  `(defun ,function-name ,args ,doc  ;; ¤see:(intern function-name)
-     (interactive) ; §see: maybe not good idea to grab the interactive there... [see with extract fnon interactive functino]
-     ;; see if generate also the non interactive command.?
-     (let ((oq:navigation-regexp (case (car-safe current-prefix-arg)  ;; §extract macro
-				   (4  (nth 1 oq:navigation-regexps)); uninversal arg
-				   (16 (nth 2 oq:navigation-regexps)); Double uninversal arg -> relative
-				   (t (nth 0 oq:navigation-regexps)))))
-       (progn ,@body))))
-
-;; ¤note: [si pattern wrap en faire vrai macro, pattern, de spécialisation commandes]
-;; §later? add message, §todo: extract custom
-;; §bonux: find a way this persist for next invocations? [last command + last value var!]
-
-;; ¤>> color goodi for macros.
-(defconst ot:defun-tagary-keyword
-  '(("(\\(defun-tagary\\)\\_>[ \t']*\\(\\(?:\\sw\\|\\s_\\)+\\)"
-     (1 font-lock-keyword-face) ; ¤note: inspired from usepackage
-     (2 font-lock-constant-face))))
-
-(font-lock-add-keywords 'emacs-lisp-mode ot:defun-tagary-keyword)
-;; ¤maybe: extract this and specific macro in thir own file {utils}
-;; §maybe: do the same thing to set value and refresh? : tagsymbolcompute. (hook a list)
 
 ;; ¤> functions:
 ;; ¤>> next,previous
