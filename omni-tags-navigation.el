@@ -28,7 +28,7 @@
 
 ;; §next with helm, moccur...
 
-(defvar oq:navigation-regexp "§\\w+"
+(defvar oq:navigation-regexp "§\\w+" :§todo: listttttt
   ;; ¤note: try, but crashed (format "\\(%s\\|%s\\)%s\\w+" oq:primary-tag oq:secondary-tag)
   ;;        §maybe -> loading mode would reset theses variables (and font patterns)
   ;;        factorize in refresh methods?
@@ -36,33 +36,43 @@
 ;; §maybe: distinguish primary, secondary
 ;; §todo: adapt to customs.
 
-;; §draft
-(defun oq:count-tags () ; §see:primary-vs-secondary.
-  "count number of tag in the whole file"
-  (interactive)
-  (how-many oq:navigation-regexp (point-min) (point-max))
-  ;; §maybe: build pattern from keyword?
-  ;; §todo: extract intern function and make interactove say: There is ...
-  ;; // make it use the region if an selected
-  )
 
-;; §todo: functions to scan accross directory, project
+;; ¤> rafinate commands to change pattern behavior based on Universal arguments/
+;; §later: extract non interactive function, and pass the mode as optional argument.
 
-;; §todo: autoload [might be more complicate since in subfile: (require omni-tags?? -> cyclic dep)]
-(defun ot:occur-tags ()
-  "Call occur on My §tags.
+;; §inspired from http://emacsredux.com/blog/2013/07/17/advise-multiple-commands-in-the-same-manner/
+(defmacro defun-tagary (function-name args doc &rest body)
+  "Macro to create interactive commands where \\[universal-argument] would enable switch between primary and secondary tag"
+  `(defun ,function-name ,args ,doc  ;; ¤see:(intern function-name)
+     (interactive) ; §see: maybe not good idea to grab the interactive there... [see with extract fnon interactive functino]
+     ;; see if generate also the non interactive command.?
+     (let ((oq:navigation-regexp (case (car-safe current-prefix-arg)  ;; §extract macro
+				   (4  "\\(§\\|¤\\)\\w+"); uninversal arg
+				   (16 "¤\\w+"); Double uninversal arg -> relative
+				   (t "§\\w+" ))))
+       (progn ,@body))))
 
-Pattern is specified by `oq:navigation-regexp'."
-  (interactive)
-  (push-mark)
-  (occur oq:navigation-regexp)) ;; §TODO: use pattern!
+;; ¤note: [si pattern wrap en faire vrai macro, pattern, de spécialisation commandes]
+;; §later? add message, §todo: extract custom
+;; §bonux: find a way this persist for next invocations? [last command + last value var!]
 
+;; ¤>> color goodi for macros.
+(defconst ot:defun-tagary-keyword
+  '(("(\\(defun-tagary\\)\\_>[ \t']*\\(\\(?:\\sw\\|\\s_\\)+\\)"
+     (1 font-lock-keyword-face) ; ¤note: inspired from usepackage
+     (2 font-lock-constant-face))))
+
+(font-lock-add-keywords 'emacs-lisp-mode ot:defun-tagary-keyword)
+;; ¤maybe: extract this and specific macro in thir own package?
+;; §maybe: do the same thing to set value and refresh?
+
+;; ¤> functions:
+;; ¤>> next,previous
 ;; §maybe cycle?
-(defun ot:next-tags ()
+(defun-tagary ot:next-tags ()
   "Go to next §tags.
 
 Pattern is specified by `oq:navigation-regexp'."
-  (interactive)
   (push-mark) ;; §maybe: not if previous command was either next/previous tag? ¤maybe: configurable behavior?
   ;; §maybe: special mark ring?
   (if (search-forward-regexp oq:navigation-regexp nil t
@@ -77,45 +87,37 @@ Pattern is specified by `oq:navigation-regexp'."
 ;; §see: isearch-repeat dans isearch.el1326 [wrap function, sinon goto min/max -> var pour direction ]
 
 
-(defun ot:previous-tags ()
+(defun-tagary ot:previous-tags ()
   "Go to prev §tags.
 
 Pattern is specified by `oq:navigation-regexp'."
-  (interactive)
   (push-mark)
   (unless (search-backward-regexp oq:navigation-regexp nil t)
     (message "No Tags Before!")
     (pop-mark)))
 
 
-;; ¤> rafinate commands to change pattern behavior based on Universal arguments/
-;; §later: extract non interactive function, and pass the mode as optional argument.
+;; ¤>> occur, helms...
 
-;; §inspired from http://emacsredux.com/blog/2013/07/17/advise-multiple-commands-in-the-same-manner/
-(defmacro advise-around-commands (advice-name commands &rest body)
-  "Apply advice named ADVICE-NAME to multiple COMMANDS.
+;; ¤note: malformed function is a false warning.
+(defun-tagary oq:count-tags () ; §see:primary-vs-secondary.
+  "count number of tag in the whole file"
+  (how-many oq:navigation-regexp (point-min) (point-max))
+  ;; §todo: extract intern function and make interactove say: There is ...
+  ;; // make it use the region if an selected
+  )
 
-The body of the advice is in BODY."
-  `(progn
-     ,@(mapcar (lambda (command)
-                 `(defadvice ,command (around ,(intern (concat (symbol-name command) "-" advice-name)) activate)
-		    ;; §maybe: replace hardcoded around by val (before by default)
-                    ,@body))
-               commands)))
+;; §todo: functions to scan accross directory, project
 
-(advise-around-commands "nary" (ot:next-tags ot:previous-tags ot:occur-tags )
-			;; ¤note: liste des tags commands. à étendre avec nouvelles fonctions
-			(let ((oq:navigation-regexp (case (car-safe current-prefix-arg)  ;; §extract macro
-						      (4  "\\(§\\|¤\\)\\w+"); uninversal arg
-						      (16 "¤\\w+"); Double uninversal arg -> relative
-						      (t "§\\w+" ))))
-			  ad-do-it))
-;; ¤note: [si pattern wrap en faire vrai macro, pattern, de spécialisation commandes]
-;; §to apply to mutuiple buffer see: [for different namespaces!]
-;; §later? add message, §todo: extract custom
-;; §bonux: find a way this persist for next invocations? [last command + last value var!]
+;; §todo: autoload [might be more complicate since in subfile: (require omni-tags?? -> cyclic dep)]
+(defun-tagary ot:occur-tags ()
+  "Call occur on My §tags.
 
+Pattern is specified by `oq:navigation-regexp'."
+  (push-mark)
+  (occur oq:navigation-regexp)) ;; §TODO: use pattern!
 
+;; §to apply to multuiple buffer see: [for different namespaces!]
 
 (provide 'omni-tags-navigation)
 
