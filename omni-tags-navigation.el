@@ -28,11 +28,11 @@
 
 ;; §next with helm, moccur...
 
-(defvar oq:navigation-regexp "§\\w+" :§todo: listttttt
+(defvar oq:navigation-regexps '("§\\w+" "\\(§\\|¤\\)\\w+" "¤\\w+")
   ;; ¤note: try, but crashed (format "\\(%s\\|%s\\)%s\\w+" oq:primary-tag oq:secondary-tag)
-  ;;        §maybe -> loading mode would reset theses variables (and font patterns)
+  ;; §maybe -> loading mode would reset theses variables (and font patterns)
   ;;        factorize in refresh methods?
-  "Navigation regexp used in all the navigation function")
+  "Navigation regexp used in all the navigation function. (normal, one universal, two universal)")
 ;; §maybe: distinguish primary, secondary
 ;; §todo: adapt to customs.
 
@@ -47,9 +47,9 @@
      (interactive) ; §see: maybe not good idea to grab the interactive there... [see with extract fnon interactive functino]
      ;; see if generate also the non interactive command.?
      (let ((oq:navigation-regexp (case (car-safe current-prefix-arg)  ;; §extract macro
-				   (4  "\\(§\\|¤\\)\\w+"); uninversal arg
-				   (16 "¤\\w+"); Double uninversal arg -> relative
-				   (t "§\\w+" ))))
+				   (4  (nth 1 oq:navigation-regexps)); uninversal arg
+				   (16 (nth 2 oq:navigation-regexps)); Double uninversal arg -> relative
+				   (t (nth 0 oq:navigation-regexps)))))
        (progn ,@body))))
 
 ;; ¤note: [si pattern wrap en faire vrai macro, pattern, de spécialisation commandes]
@@ -63,8 +63,8 @@
      (2 font-lock-constant-face))))
 
 (font-lock-add-keywords 'emacs-lisp-mode ot:defun-tagary-keyword)
-;; ¤maybe: extract this and specific macro in thir own package?
-;; §maybe: do the same thing to set value and refresh?
+;; ¤maybe: extract this and specific macro in thir own file {utils}
+;; §maybe: do the same thing to set value and refresh? : tagsymbolcompute. (hook a list)
 
 ;; ¤> functions:
 ;; ¤>> next,previous
@@ -72,7 +72,7 @@
 (defun-tagary ot:next-tags ()
   "Go to next §tags.
 
-Pattern is specified by `oq:navigation-regexp'."
+Pattern is specified by `oq:navigation-regexps'."
   (push-mark) ;; §maybe: not if previous command was either next/previous tag? ¤maybe: configurable behavior?
   ;; §maybe: special mark ring?
   (if (search-forward-regexp oq:navigation-regexp nil t
@@ -90,7 +90,7 @@ Pattern is specified by `oq:navigation-regexp'."
 (defun-tagary ot:previous-tags ()
   "Go to prev §tags.
 
-Pattern is specified by `oq:navigation-regexp'."
+Pattern is specified by `oq:navigation-regexps'."
   (push-mark)
   (unless (search-backward-regexp oq:navigation-regexp nil t)
     (message "No Tags Before!")
@@ -113,7 +113,7 @@ Pattern is specified by `oq:navigation-regexp'."
 (defun-tagary ot:occur-tags ()
   "Call occur on My §tags.
 
-Pattern is specified by `oq:navigation-regexp'."
+Pattern is specified by `oq:navigation-regexps'."
   (push-mark)
   (occur oq:navigation-regexp)) ;; §TODO: use pattern!
 
