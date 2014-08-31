@@ -4,12 +4,11 @@
 
 * Description
 This mode is to support "tag", annotation in org-files or comments in programming mode.
-A tags looks like a java annotation with =§= or =¤= instead of the =@=.
+A tags looks like a java annotation with =§= (primary) or =¤= (secondary) instead of the =@=.
 
-The emacs mode currently support highlighting and basic navigation between tags.
+The emacs mode currently support highlighting and basic navigation between these tags.
 
 # §todo: example of the current syntax:
-
 
 * Installation
 
@@ -26,17 +25,17 @@ Otherwise, if you use [[https://github.com/jwiegley/use-package][use-package]] y
 
 Wait it to mature a bit and you might get =some el-get= recipe, before it hits elpa, melpa, quelpa or else.
 
-* Use
+* Usage
 
 Once mode is on in the current buffer, you see specific syntax highlighting.
 You can also navigate between them using =ot:next-tags= and =ot:previous-tags= respectively bound to =M-§= and =C-§=
-There is also =ot:occur-tags=, which is bound by default to =C-M-§=
+There is also =ot:occur-tags= that run =occur= targetting tags which is bound by default to =C-M-§=
 
 # add blabla about C-u combos
 
 * Configuration
 
-To customize character uses as tags symbol, just run =M-x customization-group RET omni-tags=.
+To customize character used as tags symbol, just run =M-x customization-group RET omni-tags=.
 The faces are also customizables, in =omni-tags-face=
 
 * Notes

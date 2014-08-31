@@ -3,16 +3,16 @@
 ;; Copyright (C) 2014 Adrien Becchis
 ;;
 ;; Author: Adrien Becchis <adriean.khisbe@live.fr>
-;; Created: ...
 ;; Version: 0.1
 ;; Package-Requires: ((pcre2el "1.7"))
 ;; Keywords: convenience
+;; URL: http://github.com/AdrieanKhisbe/omni-tags.e
+
 
 ;; This file is not part of GNU Emacs.
 
 ;;; Commentary:
-;; §todo: install
-;; §todo.. [maybe rebuilt from readme?]
+;; See the README.org file
 
 
 ;; This program is free software; you can redistribute it and/or modify

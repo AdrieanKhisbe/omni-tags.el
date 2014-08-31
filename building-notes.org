@@ -1,4 +1,4 @@
-Diverse [Personal] Building Notes for omni-tags
+/These are Diverse [Personal] Building Notes for omni-tags/
 
 * Initials notes
 - faire la liste des mots clefs
@@ -59,14 +59,6 @@ A compiled keywords list starts with t.  It is produced internal by `font-lock-c
 
 Note: pas de defvar nécessaire avec un quote devant le nom de la face.
 Si veut utiliser var: defface variable with value is symbol (itself)
-
-** TODO Package
-- Update documentation
-- Make Readme
-- get date.
-- get [future] github url
-
-GET GET!!!
 
 * Dilemmas & Ideas
 
