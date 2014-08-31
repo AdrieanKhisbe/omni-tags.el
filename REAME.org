@@ -1,22 +1,52 @@
+*Omni-tags.el*
 
- My tag mode
+/More details to come/
+
 * Description
-This mode is to support tag, anotation in org-files or comments in programming mode.
+This mode is to support "tag", annotation in org-files or comments in programming mode.
+A tags looks like a java annotation with =§= or =¤= instead of the =@=.
 
-# why-> Gool
+The emacs mode currently support highlighting and basic navigation between tags.
+
+# §todo: example of the current syntax:
+
+
 * Installation
 
+To install it, put the files in your load path, and require it.
+Otherwise, if you use [[https://github.com/jwiegley/use-package][use-package]] you could use the following config
+#+begin_src emacs-lisp
+  (use-package omni-tags
+    :init (progn
+            (add-hook 'org-mode-hook 'omni-tags-mode)
+            (add-hook 'prog-mode-hook 'omni-tags-mode)))
+
+#+end_src
+
+
+Wait it to mature a bit and you might get =some el-get= recipe, before it hits elpa, melpa, quelpa or else.
 
 * Use
 
-/To be Done/
+Once mode is on in the current buffer, you see specific syntax highlighting.
+You can also navigate between them using =ot:next-tags= and =ot:previous-tags= respectively bound to =M-§= and =C-§=
+There is also =ot:occur-tags=, which is bound by default to =C-M-§=
+
+# add blabla about C-u combos
 
 * Configuration
 
-# liste des variables
+To customize character uses as tags symbol, just run =M-x customization-group RET omni-tags=.
+The faces are also customizables, in =omni-tags-face=
 
-A default configuration is available. you just have to invoke = §GETNAME= to set it up.
-This will hook =mytag-mode= to both =prog-mode= and =org-mode=
-and also bind §here
-# §tocompleye
-/Later/
+* Notes
+
+This is still a prototype. So if ever you think about using it, prefer the =master= branch, and expect to update your config.
+
+It's working, I use it on my =Emacs=, but it's far wrong being perfect and not yet stable.
+(Cask config to be improved.)
+# §more
+
+*If you have any remark, refactor suggestion or else, just pose an issue ;)*
+
+*Important*: i'm starting to rename it with annotation or something to avoid the confusion about programming tags. (there are closer to twitter tags)
