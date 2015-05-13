@@ -29,7 +29,7 @@
 ;; §next with helm, moccur...
 
 (defvar omni-tags-navigation-regexps '("§\\w+" "\\(§\\|¤\\)\\w+" "¤\\w+")
-  ;; ¤note: try, but crashed (format "\\(%s\\|%s\\)%s\\w+" oq:primary-tag oq:secondary-tag)
+  ;; ¤note: try, but crashed (format "\\(%s\\|%s\\)%s\\w+" omni-tags-primary-tag omni-tags-secondary-tag)
   ;; §maybe -> loading mode would reset theses variables (and font patterns)
   ;;        factorize in refresh methods?
   "Navigation regexp used in all the navigation function. (normal, one universal, two universal)")
@@ -42,12 +42,12 @@
 (defun-tagary omni-tags-next-tags ()
   "Go to next §tags.
 
-Pattern is specified by `oq:navigation-regexps'."
+Pattern is specified by `omni-tags-navigation-regexps'."
   (push-mark) ;; §maybe: not if previous command was either next/previous tag? ¤maybe: configurable behavior?
   ;; §maybe: special mark ring?
-  (if (search-forward-regexp oq:navigation-regexp nil t
+  (if (search-forward-regexp omni-tags-navigation-regexp nil t
                              ;; count value:
-                             (if (looking-at oq:navigation-regexp) 2 1))
+                             (if (looking-at omni-tags-navigation-regexp) 2 1))
       (goto-char (match-beginning 0)); §check: might set the mark due to the advice
     (progn (message "No More Founds Tags!")
            (pop-mark) ; avoid marks to accumulate oonce end of buffer
@@ -60,9 +60,9 @@ Pattern is specified by `oq:navigation-regexps'."
 (defun-tagary omni-tags-previous-tags ()
   "Go to prev §tags.
 
-Pattern is specified by `oq:navigation-regexps'."
+Pattern is specified by `omni-tags-navigation-regexps'."
   (push-mark)
-  (unless (search-backward-regexp oq:navigation-regexp nil t)
+  (unless (search-backward-regexp omni-tags-navigation-regexp nil t)
     (message "No Tags Before!")
     (pop-mark)))
 
@@ -70,9 +70,9 @@ Pattern is specified by `oq:navigation-regexps'."
 ;; ¤>> occur, helms...
 
 ;; ¤note: malformed function is a false warning.
-(defun-tagary oq:count-tags () ; §see:primary-vs-secondary.
+(defun-tagary omni-tags-count-tags () ; §see:primary-vs-secondary.
   "count number of tag in the whole file"
-  (how-many oq:navigation-regexp (point-min) (point-max))
+  (how-many omni-tags-navigation-regexp (point-min) (point-max))
   ;; §todo: extract intern function and make interactove say: There is ...
   ;; // make it use the region if an selected
   )
@@ -83,9 +83,9 @@ Pattern is specified by `oq:navigation-regexps'."
 (defun-tagary omni-tags-occur-tags ()
   "Call occur on My §tags.
 
-Pattern is specified by `oq:navigation-regexps'."
+Pattern is specified by `omni-tags-navigation-regexps'."
   (push-mark)
-  (occur oq:navigation-regexp)) ;; §TODO: use pattern!
+  (occur omni-tags-navigation-regexp)) ;; §TODO: use pattern of string
 
 ;; §to apply to multuiple buffer see: [for different namespaces!]
 
