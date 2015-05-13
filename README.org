@@ -1,7 +1,7 @@
 * Omni-tags.el
 
-[[http://stable.melpa.org/packages/omni-tags-badge.svg][file:http://stable.melpa.org/#/omni-tags]]
-[[http://melpa.org/packages/omni-tags-badge.svg][file:http://melpa.org/#/omni-tags]]
+[[http://stable.melpa.org/#/omni-tags][file:http://stable.melpa.org/packages/omni-tags-badge.svg]]
+[[http://melpa.org/#/omni-tags][file:http://melpa.org/packages/omni-tags-badge.svg]]
 
 /More details to come! :)/
 
