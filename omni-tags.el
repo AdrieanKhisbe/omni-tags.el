@@ -1,6 +1,6 @@
-;;; omni-tags.el --- ¤Highlight and §Actions for 'Tags'
+;;; omni-tags.el --- Highlight and Actions for 'Tags'
 ;;
-;; Copyright (C) 2014 Adrien Becchis
+;; Copyright (C) 2014-2015 Adrien Becchis
 ;;
 ;; Author: Adrien Becchis <adriean.khisbe@live.fr>
 ;; Version: 0.1
@@ -8,12 +8,7 @@
 ;; Keywords: convenience
 ;; URL: http://github.com/AdrieanKhisbe/omni-tags.el
 
-
 ;; This file is not part of GNU Emacs.
-
-;;; Commentary:
-;; See the README.org file
-
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -28,7 +23,15 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
+;;; Commentary:
+;; This mode is to support “tag”, annotation in org-files or comments in
+;; programming mode. A tags looks like a java annotation with § (primary)
+;; or ¤ (secondary) instead of the @.
+;; This emacs mode currently support highlighting and basic navigation
+;; between these tags.
+;;
+;; For more details refer to the the README.org file, and for examples of
+;; what theses "tags", comments, you can look at the code source of the library.
 
 ;;; Code:
 
@@ -38,7 +41,7 @@
 (require 'omni-tags-navigation)
 
 ;; §TOFIX: Make it appear in org comment!!! (probably something to see with `org-mode')
-;; §Tose! ?? what _ symbolize in regexp? match ;?
+;; §Tosee: ! ?? what _ symbolize in regexp? match ;?
 ;; §Todo: make list of different keyword, more highlighted! for instance: TD TF TI TM
 
 ;; ¤> Customs
