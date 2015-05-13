@@ -1,19 +1,11 @@
 ;;; omni-tags-face.el --- Specials faces for `omni-tags-mode'
 ;;
-;; Copyright (C) 2014 Adrien Becchis
+;; Copyright (C) 2014-2015 Adrien Becchis
 ;;
 ;; Author: Adrien Becchis <adriean.khisbe@live.fr>
 ;; Keywords: convenience
 
 ;; This file is not part of GNU Emacs.
-
-;;; Building-Notes:
-;; §maybe: pass color as custom. (at least mine. haha.)
-;; §maybe: switch about face occurs here? (option require?)
-;; §maybe: specify mode according light/dark. and tty.
-;; ¤maybe:doc add reference to the mode?
-;;        trailing dot?
-;; ¤todo:custom: tweak colors
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -27,6 +19,15 @@
 
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+;;; Building-Notes:
+;; §maybe: pass color as custom. (at least mine. haha.)
+;; §maybe: switch about face occurs here? (option require?)
+;; §maybe: specify mode according light/dark. and tty.
+;; ¤maybe:doc add reference to the mode?
+;;        trailing dot?
+;; ¤todo:custom: tweak colors
 
 ;;; Commentary:
 ;; This file contain the faces used in `omni-tags' highlighting
@@ -46,7 +47,9 @@
 
 (defface omni-tags-face-symbol
   '((t (:inherit omni-tags-face-default
-                 :weight bold :foreground "DeepSkyBlue2"))) ;; §maybe: change with tags [and tag darker]
+                 :weight bold :foreground "DeepSkyBlue2")))
+  ;; §maybe: change with color tags [and tag darker]
+
   "Face used for the tag symbol (leading character)"
   :group 'omni-tags-faces)
 

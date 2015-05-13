@@ -1,6 +1,6 @@
 ;;; omni-tags-navigation.el --- Navigation between omni-tags
 ;;
-;; Copyright (C) 2014 Adrien Becchis
+;; Copyright (C) 2014-2015 Adrien Becchis
 ;;
 ;; Author: Adrien Becchis <adriean.khisbe@live.fr>
 ;; Keywords: convenience
