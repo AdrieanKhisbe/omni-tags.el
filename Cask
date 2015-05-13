@@ -5,8 +5,6 @@
 
 (files "*.el")
 
-(depends-on "pcre2el")
-
 (development
  (depends-on "f")
  (depends-on "ecukes")
