@@ -28,7 +28,7 @@
 (require 'omni-tags-utils)
 ;; §next with helm, moccur...
 
-(defvar oq:navigation-regexps '("§\\w+" "\\(§\\|¤\\)\\w+" "¤\\w+")
+(defvar omni-tags-navigation-regexps '("§\\w+" "\\(§\\|¤\\)\\w+" "¤\\w+")
   ;; ¤note: try, but crashed (format "\\(%s\\|%s\\)%s\\w+" oq:primary-tag oq:secondary-tag)
   ;; §maybe -> loading mode would reset theses variables (and font patterns)
   ;;        factorize in refresh methods?

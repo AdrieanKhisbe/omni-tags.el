@@ -36,10 +36,10 @@
   `(defun ,function-name ,args ,doc  ;; ¤see:(intern function-name)
      (interactive) ; §see: maybe not good idea to grab the interactive there... [see with extract fnon interactive functino]
      ;; see if generate also the non interactive command.?
-     (let ((oq:navigation-regexp (cl-case (car-safe current-prefix-arg)  ;; §extract macro
-                                   (4  (nth 1 oq:navigation-regexps)); uninversal arg
-                                   (16 (nth 2 oq:navigation-regexps)); Double uninversal arg -> relative
-                                   (t (nth 0 oq:navigation-regexps)))))
+     (let ((omni-tags-navigation-regexp (cl-case (car-safe current-prefix-arg)  ;; §extract macro
+                                   (4  (nth 1 omni-tags-navigation-regexps)); uninversal arg
+                                   (16 (nth 2 omni-tags-navigation-regexps)); Double uninversal arg -> relative
+                                   (t (nth 0 omni-tags-navigation-regexps)))))
        (progn ,@body))))
 
 ;; ¤note: [si pattern wrap en faire vrai macro, pattern, de spécialisation commandes]
