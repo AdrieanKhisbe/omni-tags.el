@@ -6,7 +6,7 @@
 ;; Version: 0.1
 ;; Package-Requires: ((pcre2el "1.7") (cl-lib "0.5"))
 ;; Keywords: convenience
-;; URL: http://github.com/AdrieanKhisbe/omni-tags.e
+;; URL: http://github.com/AdrieanKhisbe/omni-tags.el
 
 
 ;; This file is not part of GNU Emacs.
