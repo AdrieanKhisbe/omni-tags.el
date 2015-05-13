@@ -49,32 +49,32 @@
   "Customs for `omni-tags' modes."
   :group 'convenience) ; ¤note: hesitated with tools
 
-(defcustom ot:primary-tag "§" "Primary Tag Symbol (associated with actions)."
+(defcustom omni-tags-primary-tag "§" "Primary Tag Symbol (associated with actions)."
   :type 'string  :group 'omni-tags) ; §maybe:char? ;§todo:add syze constraint
 
-(defcustom ot:secondary-tag "¤" "Secondary Tag Symbol (associated with descriptions)."
+(defcustom omni-tags-secondary-tag "¤" "Secondary Tag Symbol (associated with descriptions)."
   :type 'string  :group 'omni-tags)
 ;; ¤maybe: special tag for headings? [and special face: easier to identify: for navigation, map..]
 
-(defvar ot:tag-patterns nil "Ensemble des patterns à matcher.")
+(defvar omni-tags-tag-patterns nil "Ensemble des patterns à matcher.")
 ;; §HERE : todo ;: créer variables spécifiques: single, composed, complex.
 ;; §see comment late bind le tag. [ ou refresh ]
 
-(defvar ot:override t
+(defvar omni-tags-override t
   "Value to use in keyword pattern, possible values:
 - t: override existing fontification
 - append/prepend: merge of existing fontification (prepend comes first)
 
 - keep: only parts not already fontified are highlighted") ;; ¤maybe:try change
-(defconst ot:optional "laxmatch"
+(defconst omni-tags-optional "laxmatch"
   "Specify that this part of the keyword is not compulsary: don't throw error if a subexp is not match.")
 
-;; ¤maybe (defvar ot:pattern-simple  "Pattern for single" )
+;; ¤maybe (defvar omni-tags-pattern-simple  "Pattern for single" )
 ;; maybe could enforce number of matching () to validate a pattern [special vaildation function for custom]
 
-(defun ot:make-pattern (regexp)
+(defun omni-tags-make-pattern (regexp)
   "Create a pattern.  Replace first %s with tag symbol, and convert REGEXP writen in pcre format to Emacs regexp."
-  (rxt-pcre-to-elisp (format regexp (format "(%s+|%s+)" ot:primary-tag ot:secondary-tag)))
+  (rxt-pcre-to-elisp (format regexp (format "(%s+|%s+)" omni-tags-primary-tag omni-tags-secondary-tag)))
   ;; §maybe: get ride of pcre2el dependecy?
   )
 
@@ -83,33 +83,33 @@
 ;; ¤doc: Keyword: form: more doc at `font-lock-keywords'
 ;; MATCH-HIGHLIGH (SUBEXP FACENAME [OVERRIDE [LAXMATCH]])
 
-(defvar ot:tag-wonder-keyword
-  `(,(ot:make-pattern "%s([!?¿¡]+)");; §TODO: extract to custom
-    (1 'ot:face:symbol  ,ot:override)
-    (2 'ot:face:ponctuation ,ot:override))
+(defvar omni-tags-tag-wonder-keyword
+  `(,(omni-tags-make-pattern "%s([!?¿¡]+)");; §TODO: extract to custom
+    (1 'omni-tags-face-symbol  ,omni-tags-override)
+    (2 'omni-tags-face-ponctuation ,omni-tags-override))
   "Wonder/expression tag.")
 ;; §maybe; extract defintion in function to enable to reevalute it (after change pattern)
 
-(defvar ot:tag-detailed-keyword
-  `(,(ot:make-pattern "%s(['@\-_ [:alnum:]]+)(([:])([_,-;/[:alnum:]]+))*([?!¡¿]+)?") ;§todo: exlude :
+(defvar omni-tags-tag-detailed-keyword
+  `(,(omni-tags-make-pattern "%s(['@\-_ [:alnum:]]+)(([:])([_,-;/[:alnum:]]+))*([?!¡¿]+)?") ;§todo: exlude :
     ;; §tofix: combo a:b:c -> might need to specify something. or hackyhacky for combo.
     ;; ¤note: semblerait que les répétition écrase les présents matching.
     ;;        [ce qui est normalement le cas avec les regexp]
-    (1 'ot:face:symbol      ,ot:override)
-    (2 'ot:face:name        ,ot:override)
-    (4 'ot:face:separator   ,ot:override ,ot:optional) ;§maybe, delete (), and use wrapping.
-    (5 'ot:face:details     ,ot:override ,ot:optional)
-    (6 'ot:face:ponctuation ,ot:override ,ot:optional))
+    (1 'omni-tags-face-symbol      ,omni-tags-override)
+    (2 'omni-tags-face-name        ,omni-tags-override)
+    (4 'omni-tags-face-separator   ,omni-tags-override ,omni-tags-optional) ;§maybe, delete (), and use wrapping.
+    (5 'omni-tags-face-details     ,omni-tags-override ,omni-tags-optional)
+    (6 'omni-tags-face-ponctuation ,omni-tags-override ,omni-tags-optional))
   "Complex Tag §todo: repeat the same one without quotes")
 
 ;; §TODO: extract to custom [word components and so]
-(defvar ot:whatever-follow-keyword ;§torename
-  `(,(ot:make-pattern "%s(['@\-_ [:alnum:]]+)(:)( [^¤§\n]*| +$)")
+(defvar omni-tags-whatever-follow-keyword ;§torename
+  `(,(omni-tags-make-pattern "%s(['@\-_ [:alnum:]]+)(:)( [^¤§\n]*| +$)")
     ;; ¤note: [^ … ] matches all characters not in the list, even newlines
-    (1 'ot:face:symbol      ,ot:override)
-    (2 'ot:face:name        ,ot:override)
-    (3 'ot:face:separator   ,ot:override) ;§maybe, delete (), and use wrapping.
-    (4 'ot:face:details     ,ot:override ,ot:optional))
+    (1 'omni-tags-face-symbol      ,omni-tags-override)
+    (2 'omni-tags-face-name        ,omni-tags-override)
+    (3 'omni-tags-face-separator   ,omni-tags-override) ;§maybe, delete (), and use wrapping.
+    (4 'omni-tags-face-details     ,omni-tags-override ,omni-tags-optional))
   "Tag that grab all that follow on the current line.")
 
 ;; §version :: qui prendrait tout jusqu'à ligne vide (ou fin du commentaire!!!)
@@ -119,10 +119,10 @@
 ;; §maybe; extract defintion in function to enable to reevalute it (after change pattern)
 
 
-(defvar ot:tag-heading ;name to find
-  `(,(rxt-pcre-to-elisp (format "(%s)(>+)" ot:secondary-tag))
-    (1 'ot:face:symbol  ,ot:override) ;§maybe: try <¤>
-    (2 'ot:face:ponctuation ,ot:override)) ;§maybe: grab the rest of the line (eventual title)
+(defvar omni-tags-tag-heading ;name to find
+  `(,(rxt-pcre-to-elisp (format "(%s)(>+)" omni-tags-secondary-tag))
+    (1 'omni-tags-face-symbol  ,omni-tags-override) ;§maybe: try <¤>
+    (2 'omni-tags-face-ponctuation ,omni-tags-override)) ;§maybe: grab the rest of the line (eventual title)
   "heading tag")
 
 ;; §later: add funtions. and specific navigation to emulate org
@@ -133,26 +133,26 @@
 ;;        place holder. (temporary): (¤) [¤] {¤}
 ;;        wrapped tag:  [§ abcb ]
 
-(setq ot:tag-patterns
-      (list `(,ot:primary-tag  . 'ot:face:symbol) ; Inline
-	    ot:tag-detailed-keyword
-	    ot:tag-wonder-keyword
-	    ot:tag-heading
-	    ot:whatever-follow-keyword
-	    ))
+(setq omni-tags-tag-patterns
+      (list `(,omni-tags-primary-tag  . 'omni-tags-face-symbol) ; Inline
+            omni-tags-tag-detailed-keyword
+            omni-tags-tag-wonder-keyword
+            omni-tags-tag-heading
+            omni-tags-whatever-follow-keyword
+            ))
 
   ;;; Coloration des tags des tags
-(defun ot:font-on ()
+(defun omni-tags-font-on ()
   "Add fontifications for `omni-tags'.
-Keywords are stored in list `ot:tag-patterns'."
+Keywords are stored in list `omni-tags-tag-patterns'."
   (font-lock-add-keywords
    nil  ; ¤doc: Mode, if nil means that it's applied to current buffer. otherwise specify mode
-   ot:tag-patterns)
+   omni-tags-tag-patterns)
   (font-lock-fontify-buffer))
 
-(defun ot:font-off ()
+(defun omni-tags-font-off ()
   "Remove fontifications for `omni-tags'."                                       ;
-  (mapcar (lambda (keyword) (font-lock-add-keywords nil keyword)) ot:tag-patterns)
+  (mapcar (lambda (keyword) (font-lock-add-keywords nil keyword)) omni-tags-tag-patterns)
   (font-lock-fontify-buffer))
 
   ;;; ¤* Utils fonctions
@@ -174,16 +174,16 @@ Keywords are stored in list `ot:tag-patterns'."
   "Colorize 'Personal tags' in the buffer."
   :lighter " §"
   :keymap (let ((map (make-sparse-keymap)))
-	    (define-key map (kbd "M-§") 'ot:next-tags) ;; ¤note: key should also be reevaluated.
-	    (define-key map (kbd "C-§") 'ot:previous-tags)
-	    (define-key map (kbd "C-M-§") 'ot:occur-tags)
+            (define-key map (kbd "M-§") 'omni-tags-next-tags) ;; ¤note: key should also be reevaluated.
+            (define-key map (kbd "C-§") 'omni-tags-previous-tags)
+            (define-key map (kbd "C-M-§") 'omni-tags-occur-tags)
             map)
   (progn (if omni-tags-mode
-	     (ot:font-on)
-	   (ot:font-off))))
+             (omni-tags-font-on)
+           (omni-tags-font-off))))
 
 ;; §config:
-;; §idée: move dans `ot:default-config' ?
+;; §idée: move dans `omni-tags-default-config' ?
 ;; (add-hook 'org-mode-hook 'omni-tags-mode)
 ;; (add-hook 'prog-mode-hook 'omni-tags-mode)
 

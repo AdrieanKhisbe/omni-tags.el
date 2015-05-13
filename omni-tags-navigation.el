@@ -7,10 +7,6 @@
 
 ;; This file is not part of GNU Emacs.
 
-;;; Commentary:
-;; `ot' is the namepace prefix
-
-
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
@@ -23,6 +19,9 @@
 
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; Commentary:
+;; This file regroup the fucntions to define navigation functions
 
 ;;; Code:
 
@@ -40,25 +39,25 @@
 ;; ¤> functions:
 ;; ¤>> next,previous
 ;; §maybe cycle?
-(defun-tagary ot:next-tags ()
+(defun-tagary omni-tags-next-tags ()
   "Go to next §tags.
 
 Pattern is specified by `oq:navigation-regexps'."
   (push-mark) ;; §maybe: not if previous command was either next/previous tag? ¤maybe: configurable behavior?
   ;; §maybe: special mark ring?
   (if (search-forward-regexp oq:navigation-regexp nil t
-			     ;; count value:
-			     (if (looking-at oq:navigation-regexp) 2 1))
+                             ;; count value:
+                             (if (looking-at oq:navigation-regexp) 2 1))
       (goto-char (match-beginning 0)); §check: might set the mark due to the advice
     (progn (message "No More Founds Tags!")
-	   (pop-mark) ; avoid marks to accumulate oonce end of buffer
-	   )))
+           (pop-mark) ; avoid marks to accumulate oonce end of buffer
+           )))
 ;;§todo: make generic to adapt to tag symbol: : default arg symbol (that would be call by next-primary/secondary)
 ;; §maybe: si ressaye, revient au début? [check last command.et s'assurer qu'il y a un §]
 ;; §see: isearch-repeat dans isearch.el1326 [wrap function, sinon goto min/max -> var pour direction ]
 
 
-(defun-tagary ot:previous-tags ()
+(defun-tagary omni-tags-previous-tags ()
   "Go to prev §tags.
 
 Pattern is specified by `oq:navigation-regexps'."
@@ -81,7 +80,7 @@ Pattern is specified by `oq:navigation-regexps'."
 ;; §todo: functions to scan accross directory, project
 
 ;; §todo: autoload [might be more complicate since in subfile: (require omni-tags?? -> cyclic dep)]
-(defun-tagary ot:occur-tags ()
+(defun-tagary omni-tags-occur-tags ()
   "Call occur on My §tags.
 
 Pattern is specified by `oq:navigation-regexps'."

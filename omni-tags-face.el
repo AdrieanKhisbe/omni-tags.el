@@ -7,9 +7,6 @@
 
 ;; This file is not part of GNU Emacs.
 
-;;; Commentary:
-;; `ot' is the namepace prefix
-
 ;;; Building-Notes:
 ;; §maybe: pass color as custom. (at least mine. haha.)
 ;; §maybe: switch about face occurs here? (option require?)
@@ -17,7 +14,6 @@
 ;; ¤maybe:doc add reference to the mode?
 ;;        trailing dot?
 ;; ¤todo:custom: tweak colors
-
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -32,50 +28,55 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+;;; Commentary:
+;; This file contain the faces used in `omni-tags' highlighting
+
 ;;; Code:
 
 (defgroup omni-tags-face nil
   "Faces for `omni-tags'."
   :group 'omni-tags)
 
-(defface ot:face:default
+;; §idea: make color collection matching with zenburn, etc and other favorites modes
+
+(defface omni-tags-face-default
   '((t )) ;; §maybe: background, or properties/keymap whatever
   "SuperFace for Omni Tags"
   :group 'omni-tags-faces)
 
-(defface ot:face:symbol
-  '((t (:inherit ot:face:default
-		 :weight bold :foreground "DeepSkyBlue2"))) ;; §maybe: change with tags [and tag darker]
+(defface omni-tags-face-symbol
+  '((t (:inherit omni-tags-face-default
+                 :weight bold :foreground "DeepSkyBlue2"))) ;; §maybe: change with tags [and tag darker]
   "Face used for the tag symbol (leading character)"
   :group 'omni-tags-faces)
 
-(defface ot:face:symbols
-  '((t (:inherit ot:face:default
-		 :weight bold :foreground "DeepSkyBlue3")))
+(defface omni-tags-face-symbols
+  '((t (:inherit omni-tags-face-default
+                 :weight bold :foreground "DeepSkyBlue3")))
   "Face used for the consecutive tag symbols"
   :group 'omni-tags-faces)
 
-(defface ot:face:name
-  '((t (:inherit ot:face:default
-		 :weight bold :foreground "SteelBlue1")))
+(defface omni-tags-face-name
+  '((t (:inherit omni-tags-face-default
+                 :weight bold :foreground "SteelBlue1")))
   "Face used for the first keyword of the tag"
   :group 'omni-tags-faces)
 
-(defface ot:face:details
-  '((t (:inherit ot:face:default
-		 :slant italic :foreground "LightSteelBlue1")))
+(defface omni-tags-face-details
+  '((t (:inherit omni-tags-face-default
+                 :slant italic :foreground "LightSteelBlue1")))
   "Face used for addition details inside a tag"
   :group 'omni-tags-faces)
 
-(defface ot:face:separator
-  '((t (:inherit ot:face:default
-		 :weight bold :foreground "OrangeRed1")))
+(defface omni-tags-face-separator
+  '((t (:inherit omni-tags-face-default
+                 :weight bold :foreground "OrangeRed1")))
   "Face used for trailing ponctuation"
   :group 'omni-tags-faces)
 
-(defface ot:face:ponctuation
-  '((t (:inherit ot:face:default
-		 :weight bold :foreground "red3"))) ;§check:bold working.
+(defface omni-tags-face-ponctuation
+  '((t (:inherit omni-tags-face-default
+                 :weight bold :foreground "red3"))) ;§check:bold working.
   "Face used for the separators inside a tag"
   :group 'omni-tags-faces)
 
