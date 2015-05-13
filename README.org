@@ -1,6 +1,9 @@
-*Omni-tags.el*
+* Omni-tags.el
 
-/More details to come/
+[[http://stable.melpa.org/packages/omni-tags-badge.svg][http://stable.melpa.org/#/omni-tags]]
+[[http://melpa.org/packages/omni-tags-badge.svg][http://melpa.org/#/omni-tags]]
+
+/More details to come! :)/
 
 * Description
 This mode is to support "tag", annotation in org-files or comments in programming mode.
@@ -28,8 +31,8 @@ Wait it to mature a bit and you might get =some el-get= recipe, before it hits e
 * Usage
 
 Once mode is on in the current buffer, you see specific syntax highlighting.
-You can also navigate between them using =ot:next-tags= and =ot:previous-tags= respectively bound to =M-§= and =C-§=
-There is also =ot:occur-tags= that run =occur= targetting tags which is bound by default to =C-M-§=
+You can also navigate between them using =omni-tags-next-tags= and =omni-tags-previous-tags= respectively bound to =M-§= and =C-§=
+There is also =omni-tags-occur-tags= that run =occur= targetting tags which is bound by default to =C-M-§=
 
 # add blabla about C-u combos
 
