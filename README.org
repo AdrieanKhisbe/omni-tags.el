@@ -1,8 +1,11 @@
 * Omni-tags.el
 
 [[https://travis-ci.org/AdrieanKhisbe/omni-tags.el][file:https://travis-ci.org/AdrieanKhisbe/omni-tags.el.svg]]
+[[https://coveralls.io/r/AdrieanKhisbe/omni-tags.el][file:https://coveralls.io/repos/AdrieanKhisbe/omni-tags.el/badge.svg]]
 [[http://melpa.org/#/omni-tags][file:http://melpa.org/packages/omni-tags-badge.svg]]
 [[http://stable.melpa.org/#/omni-tags][file:http://stable.melpa.org/packages/omni-tags-badge.svg]]
+[[https://github.com/AdrieanKhisbe/omni-tags.el/tags][file:https://img.shields.io/github/tag/AdrieanKhisbe/omni-tags.el.svg]]
+[[http://www.gnu.org/licenses/gpl-3.0.html][http://img.shields.io/:license-gpl3-blue.svg]]
 
 /More details to come! :)/
 

@@ -11,6 +11,10 @@
 
 (add-to-list 'load-path omni-tags-root-path)
 
+(require 'undercover)
+(undercover "*.el" "omni-tags/*.el"
+            (:exclude "*-test.el")
+            (:report-file "/tmp/undercover-report.json"))
 (require 'omni-tags)
 (require 'espuds)
 (require 'ert)
