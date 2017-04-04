@@ -39,5 +39,4 @@
 (require 'ert)
 (require 'omni-tags (f-expand "omni-tags" omni-tags-root-path))
 
-(provide 'test-helper)
 ;;; test-helper.el ends here
