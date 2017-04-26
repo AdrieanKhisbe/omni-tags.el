@@ -1,6 +1,6 @@
 ;;; omni-tags.el --- Highlight and Actions for 'Tags'
 ;;
-;; Copyright (C) 2014-2015 Adrien Becchis
+;; Copyright (C) 2014-2017 Adrien Becchis
 ;;
 ;; Author: Adrien Becchis <adriean.khisbe@live.fr>
 ;; Version: 0.1.1

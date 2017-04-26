@@ -1,6 +1,6 @@
 ;;; omni-tags-utils.el --- Macro utils and else for `omni-tags-mode'
 ;;
-;; Copyright (C) 2014-2015 Adrien Becchis
+;; Copyright (C) 2014-2017 Adrien Becchis
 ;;
 ;; Author: Adrien Becchis <adriean.khisbe@live.fr>
 ;; Keywords: convenience
