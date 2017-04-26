@@ -151,7 +151,7 @@ Keywords are stored in list `omni-tags-tag-patterns'."
   (font-lock-fontify-buffer))
 
 (defun omni-tags-font-off ()
-  "Remove fontifications for `omni-tags'."                                       ;
+  "Remove fontifications for `omni-tags'."
   (mapcar (lambda (keyword) (font-lock-add-keywords nil keyword)) omni-tags-tag-patterns)
   (font-lock-fontify-buffer))
 

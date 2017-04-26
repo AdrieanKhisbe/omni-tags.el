@@ -87,7 +87,7 @@ Pattern is specified by `omni-tags-navigation-regexps'."
   (push-mark)
   (occur omni-tags-navigation-regexp)) ;; §TODO: use pattern of string
 
-;; §to apply to multuiple buffer see: [for different namespaces!]
+;; §to apply to multiple buffer see: [for different namespaces!]
 
 (provide 'omni-tags-navigation)
 
